@@ -59,7 +59,7 @@ public class UtilesValidacion {
         textoActual = textoActual.equals("") ? textoCampoVacio : textoActual;
 
         // Valida el Dato
-        boolean validacionOK = UtilesDNI.validarDNI(textoActual);
+        boolean validacionOK = validarDNI(textoActual);
 
         // Señala la validación
         if (validacionOK) {
@@ -84,7 +84,7 @@ public class UtilesValidacion {
         textoActual = textoActual.equals("") ? textoCampoVacio : textoActual;
 
         // Valida el Dato
-        boolean validacionOK = UtilesFecha.validarFecha(textoActual);
+        boolean validacionOK = validarFecha(textoActual);
 
         // Señala la validación
         if (validacionOK) {
@@ -198,4 +198,89 @@ public class UtilesValidacion {
         // Devuelve Semáforo
         return validacionOK;
     }
+
+    // Validación Fecha - Campos Separados - Expresión Regular
+    public static boolean validarFechaExpReg(int dia, int mes, int any) {
+        // Construye la fecha a partir de sus componentes
+        String fecha = String.format("%02d"
+                + UtilesFecha.ER_SEP_FECHA.charAt(1) + "%02d"
+                + UtilesFecha.ER_SEP_FECHA.charAt(1) + "%d", dia, mes, any);
+
+        // Devuelve la validación de la fecha
+        return UtilesValidacion.validarDato(fecha, UtilesFecha.ER_FECHA);
+    }
+
+    // Validación Fecha - Campos Separados - No dependencias
+    public static boolean validarFechaNoDep(int dia, int mes, int any) {
+        return dia >= 1 && dia <= 31
+                && (mes == 1 || mes == 3 || mes == 5
+                || mes == 7 || mes == 8 || mes == 10
+                || mes == 12)
+                || dia >= 1 && dia <= 30
+                && (mes == 4 || mes == 6 || mes == 9
+                || mes == 11)
+                || dia >= 1 && dia <= 29 && mes == 2
+                && (any % 400 == 0
+                || any % 100 != 0 && any % 4 == 0)
+                || dia >= 1 && dia <= 28 && mes == 2;
+    }
+
+    // Validación Fecha - Campos Separados
+    public static boolean validarFecha(int dia, int mes, int any) {
+        // Calcula cuantos dias tiene el mes de la fecha
+        int numDias = UtilesFecha.obtenerDiasMes(mes, any);
+
+        // Devuelve el resultado de la validación
+        return dia >= 1 && dia <= numDias;
+    }
+
+    // Comprobar si el año es bisiesto
+    public static boolean validarBisiesto(int any) {
+        return any % 400 == 0 || any % 100 != 0 && any % 4 == 0;
+    }
+
+    // Validación Fecha - Texto sin gesglosar - Expresión Regular
+    public static boolean validarFechaExpReg(String fecha) {
+        return UtilesValidacion.validarDato(fecha, UtilesFecha.ER_FECHA);
+    }
+
+    // Validación Fecha - Texto sin gesglosar
+    public static boolean validarFecha(String fecha) {
+        // Extrae los componentes de la fecha
+        int dia = UtilesFecha.obtenerDiaFecha(fecha);
+        int mes = UtilesFecha.obtenerMesFecha(fecha);
+        int any = UtilesFecha.obtenerAnyFecha(fecha);
+
+        // Valida la fecha
+        return validarFecha(dia, mes, any);
+    }
+
+    // Valida DNI - Formato texto
+    public static boolean validarDNI(String dni) {
+        // Semáforo de validación
+        boolean dniOK = false;
+
+        // Validar DNI
+        try {
+            // Extraer DNI
+            int num = UtilesDNI.extraerNumero(dni);
+
+            // Extraer LETRA
+            char ctr = UtilesDNI.extraerControl(dni);
+
+            // Análisis Concordancia
+            dniOK = validarDNI(num, ctr);
+        } catch (Exception e) {
+            System.out.println("ERROR: Formato erróneo de DNI");
+        }
+
+        // Resultado del análisis
+        return dniOK;
+    }
+
+    // Valida DNI - Desglosado
+    public static boolean validarDNI(int num, char ctr) {
+        return UtilesDNI.calcularControl(num) == ctr;
+    }
+
 }

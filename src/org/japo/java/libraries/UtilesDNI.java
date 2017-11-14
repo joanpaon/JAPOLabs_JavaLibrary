@@ -77,9 +77,8 @@ public class UtilesDNI {
         return numero;
     }
 
-// Extraer letra del DNI
+    // Extraer letra del DNI
     public static char extraerControl(String dni) throws Exception {
-
         // Validar Formato DNI
         if (!UtilesValidacion.validarDato(dni, ER_DNI)) {
             throw new Exception("ERROR: Formato erróneo de DNI");
@@ -87,34 +86,6 @@ public class UtilesDNI {
 
         // Devuelve Letra
         return dni.charAt(dni.length() - 1);
-    }
-
-    // Valida DNI - Formato texto
-    public static boolean validarDNI(String dni) {
-        // Semáforo de validación
-        boolean dniOK = false;
-
-        // Validar DNI
-        try {
-            // Extraer DNI
-            int numero = extraerNumero(dni);
-
-            // Extraer LETRA
-            char letra = extraerControl(dni);
-
-            // Análisis Concordancia
-            dniOK = calcularControl(numero) == letra;
-        } catch (Exception e) {
-            System.out.println("ERROR: Formato erróneo de DNI");
-        }
-
-        // Resultado del análisis
-        return dniOK;
-    }
-
-    // Valida DNI - Desglosado
-    public static boolean validarDNI(int num, char ctr) {
-        return calcularControl(num) == ctr;
     }
 
     // Genera un DNI aleatorio

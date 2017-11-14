@@ -1,5 +1,5 @@
 <pre>
 
-> First version
+> Refactorized and improved code
 
 </pre>
