@@ -89,7 +89,7 @@ public class UtilesDNI {
     }
 
     // Genera un DNI aleatorio
-    public static String generarDNI() {
+    public static final String generarDNI() {
         // Generar Número
         int num = new Random().nextInt(NUM_MAX - NUM_MIN + 1) + NUM_MIN;
 

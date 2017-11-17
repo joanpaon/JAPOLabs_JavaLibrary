@@ -1,5 +1,5 @@
 <pre>
 
-> Refactorized and improved code
+> Added new methods a UtilesEntrada
 
 </pre>
