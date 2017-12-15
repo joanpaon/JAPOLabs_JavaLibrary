@@ -27,7 +27,7 @@ public class UtilesEntrada {
     public static final Scanner SCN = new Scanner(System.in, "ISO-8859-1");
 
     // Devuelve un entero introducido por teclado
-    public static int leerEntero(String msgUsr, String msgErr) {
+    public static final int leerEntero(String msgUsr, String msgErr) {
         // Dato a introducir
         int dato = 0;
 
@@ -53,7 +53,7 @@ public class UtilesEntrada {
     }
 
     // Devuelve un entero entre limites introducido por teclado
-    public static int leerEnteroRango(String msgUsr, String msgErr, int min, int max) {
+    public static final int leerEnteroRango(String msgUsr, String msgErr, int min, int max) {
         // Numero a devolver
         int dato;
 
@@ -76,5 +76,69 @@ public class UtilesEntrada {
 
         // Devolver número
         return dato;
+    }
+
+    // Devuelve un número de DNI
+    public static final int leerNumeroDNI(String msgUsr, String msgErr) {
+        return leerEnteroRango(msgUsr, msgErr, UtilesDNI.NUM_MIN, UtilesDNI.NUM_MAX);
+    }
+
+    // Devuelve un caracter introducido por teclado
+    public static final char leerCaracter(String msgUsr, String msgErr) {
+        // Dato a introducir
+        char dato = 0;
+
+        // Proceso de lectura
+        boolean lecturaOK = false;
+        do {
+            try {
+                // Entrada dato
+                System.out.print(msgUsr);
+                dato = SCN.nextLine().charAt(0);
+
+                // Marca el semáforo
+                lecturaOK = true;
+            } catch (Exception e) {
+                System.out.println(msgErr);
+            }
+        } while (!lecturaOK);
+
+        // Devolver dato
+        return dato;
+    }
+
+    // Devuelve un caracter de control de DNI
+    public static final char leerControlDNI(String msgUsr, String msgErr) {
+        return leerCaracter(msgUsr, msgErr);
+    }
+
+    // Devuelve un DNI
+    public static final String leerDNI(String msgNum, String msgCtr, String msgErr) {
+        // Mensajes
+        final String MSG_ERR = "ERROR: DNI incorrecto";
+
+        // Variables 
+        int num;
+        char ctr;
+
+        // Proceso de entrada
+        boolean dniOK;
+
+        do {
+            // Componentes del DNI
+            num = leerNumeroDNI(msgNum, msgErr);
+            ctr = leerControlDNI(msgCtr, msgErr);
+
+            // Valida DNI
+            dniOK = UtilesValidacion.validarDNI(num, ctr);
+
+            // DNI Erróneo
+            if (!dniOK) {
+                System.out.println(MSG_ERR);
+            }
+        } while (!dniOK);
+
+        // Devolver dato
+        return "" + num + ctr;
     }
 }
