@@ -20,11 +20,11 @@ package org.japo.java.libraries;
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
 public class UtilesPrimitivos {
+
     // Constantes referenciales
     public static final int MAYOR = 1;
     public static final int MENOR = -1;
     public static final int IGUAL = 0;
-    
 
     // Comprueba la paridad de un número entero
     public static boolean validarParidad(int num) {

@@ -282,5 +282,4 @@ public class UtilesValidacion {
     public static boolean validarDNI(int num, char ctr) {
         return UtilesDNI.calcularControl(num) == ctr;
     }
-
 }
