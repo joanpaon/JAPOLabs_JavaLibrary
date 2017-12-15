@@ -1,5 +1,5 @@
 <pre>
 
-> Added new methods to UtilesEntrada
+> Improved UtilesDNI and UtilesValidacion
 
 </pre>

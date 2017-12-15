@@ -263,10 +263,10 @@ public class UtilesValidacion {
         // Validar DNI
         try {
             // Extraer DNI
-            int num = UtilesDNI.extraerNumero(dni);
+            int num = UtilesDNI.obtenerNumero(dni);
 
             // Extraer LETRA
-            char ctr = UtilesDNI.extraerControl(dni);
+            char ctr = UtilesDNI.obtenerControl(dni);
 
             // Análisis Concordancia
             dniOK = validarDNI(num, ctr);
@@ -281,5 +281,37 @@ public class UtilesValidacion {
     // Valida DNI - Desglosado
     public static boolean validarDNI(int num, char ctr) {
         return UtilesDNI.calcularControl(num) == ctr;
+    }
+
+    // Valida la parte del NUMERO del DNI (sin el control)
+    public static boolean validarNumeroDNI(String dato) {
+        // Semáforo de validación
+        boolean testOK;
+
+        // Análisis
+        try {
+            // DNI Residentes Extranjeros
+            if ("XYZ".contains(dato.toUpperCase().charAt(0) + "")) {
+                // DNI Residentes Extranjeros
+                String aux = UtilesDNI.procesarDigitoInicial(dato);
+
+                // Obtiene el número
+                int num = Integer.parseInt(aux);
+                
+                // Comprueba Rango
+                testOK = num >= UtilesDNI.EXT_MIN && num <= UtilesDNI.EXT_MAX;
+            } else {
+                // Obtiene el número
+                int num = Integer.parseInt(dato);
+                
+                // Comprueba Rango
+                testOK = num >= UtilesDNI.NUM_MIN && num <= UtilesDNI.NUM_MAX;
+            }
+        } catch (NumberFormatException e) {
+            testOK = false;
+        }
+
+        // Devolver validación
+        return testOK;
     }
 }

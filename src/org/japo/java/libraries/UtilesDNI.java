@@ -29,6 +29,10 @@ public class UtilesDNI {
     // Limites DNI
     public static final int NUM_MIN = 10000000;
     public static final int NUM_MAX = 99999999;
+    
+    // Limites DNI - Extranjero
+    public static final int EXT_MIN = 1000000;
+    public static final int EXT_MAX = 29999999;
 
     // Expresión Regular FORMATO DNI ESPAÑOL SIN VALIDACION
     public static final String ER_DNI_ESP = "[0-9]{8}[" + SECUENCIA + "]";
@@ -44,48 +48,19 @@ public class UtilesDNI {
         return SECUENCIA.charAt(dni % SECUENCIA.length());
     }
 
-    // Extraer número del DNI
-    public static int extraerNumero(String dni) throws Exception {
-        // Almacen del DNI extraido
-        int numero;
-
-        // Validar Formato DNI
-        if (!UtilesValidacion.validarDato(dni, ER_DNI)) {
-            throw new Exception("ERROR: Formato erróneo de DNI");
-        }
-
-        // Extraer Prefijo Numérico
-        String prefijo = "";
-        switch (dni.charAt(0)) {
-            case 'X':
-                prefijo += '0' + dni.substring(1, dni.length() - 1);
-                break;
-            case 'Y':
-                prefijo += '1' + dni.substring(1, dni.length() - 1);
-                break;
-            case 'Z':
-                prefijo += '2' + dni.substring(1, dni.length() - 1);
-                break;
-            default:
-                prefijo += dni.substring(0, dni.length() - 1);
-        }
-
-        // Convierte el texto a entero
-        numero = Integer.parseInt(prefijo);
-
-        // Devuelve el DNI obtenido
-        return numero;
+    // Número del DNI
+    public static int obtenerNumero(String dni) throws Exception {
+        // Transformación DNI extranjero
+        String dato = procesarDigitoInicial(dni);
+        
+        // Devuelve el número
+        return Integer.parseInt(dato.substring(0, 8));
     }
 
-    // Extraer letra del DNI
-    public static char extraerControl(String dni) throws Exception {
-        // Validar Formato DNI
-        if (!UtilesValidacion.validarDato(dni, ER_DNI)) {
-            throw new Exception("ERROR: Formato erróneo de DNI");
-        }
-
+    // Control del DNI
+    public static char obtenerControl(String dni) throws Exception {
         // Devuelve Letra
-        return dni.charAt(dni.length() - 1);
+        return dni.charAt(8);
     }
 
     // Genera un DNI aleatorio
@@ -98,5 +73,31 @@ public class UtilesDNI {
 
         // Devolver DNI
         return "" + num + ctr;
+    }
+
+    // Procesa el DNI/número de DNI - Residentes Extranjeros
+    public static final String procesarDigitoInicial(String dato) {
+        // Auxiliar
+        String aux = dato;
+        
+        // Análisis
+        try {
+            // Transformar Letra Residentes Extranjeros
+            switch (aux.toUpperCase().charAt(0)) {
+                case 'X':
+                    aux = '0' + aux.substring(1);
+                    break;
+                case 'Y':
+                    aux = '1' + aux.substring(1);
+                    break;
+                case 'Z':
+                    aux = '2' + aux.substring(1);
+            }
+        } catch (Exception e) {
+            aux = dato;
+        }
+        
+        // Devuelve el número
+        return aux;
     }
 }
