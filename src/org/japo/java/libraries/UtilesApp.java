@@ -15,6 +15,8 @@
  */
 package org.japo.java.libraries;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -29,23 +31,46 @@ public class UtilesApp {
 
     // Valores por Defecto
     public static final String DEF_FICHERO_PRP = "app.properties";
+    public static final String DEF_FICHERO_XML = "app.xml";
     public static final String DEF_PUERTO_BLOQUEO = "54321";
 
     // Fichero (Por defecto) > Propiedades    
-    public static Properties cargarPropiedades() {
-        return cargarPropiedades(DEF_FICHERO_PRP);
+    public static Properties importarPropiedades() {
+        return importarPropiedades(DEF_FICHERO_PRP);
+    }
+
+    // Fichero XML (Por defecto) > Propiedades    
+    public static Properties importarPropiedadesXML() {
+        return importarPropiedadesXML(DEF_FICHERO_XML);
     }
 
     // Fichero Propiedades > Objeto Propiedades
-    public static Properties cargarPropiedades(String rutaFichero) {
+    public static Properties importarPropiedades(String fichero) {
         // Objeto de Propiedades Vacio
         Properties prp = new Properties();
 
         // Cargar Fichero de Propiedades 
-        try (FileReader fr = new FileReader(rutaFichero)) {
+        try (FileReader fr = new FileReader(fichero)) {
             prp.load(fr);
         } catch (Exception e) {
-            System.out.println("ERROR: Acceso al fichero " + rutaFichero);
+            System.out.println("ERROR: Acceso al fichero " + fichero);
+        }
+
+        // Devolver Propiedades
+        return prp;
+    }
+
+    // Fichero Propiedades XML > Objeto Propiedades
+    public static Properties importarPropiedadesXML(String fichero) {
+        // Objeto de Propiedades Vacio
+        Properties prp = new Properties();
+
+        // Cargar Fichero de Propiedades 
+        try (FileInputStream fisXml = new FileInputStream(fichero)) {
+            // Carga las propiedades
+            prp.loadFromXML(fisXml);
+        } catch (Exception e) {
+            System.out.println("ERROR: Acceso al fichero " + fichero);
         }
 
         // Devolver Propiedades
@@ -53,12 +78,17 @@ public class UtilesApp {
     }
 
     // Propiedades > Fichero (Por defecto)
-    public static boolean guardarPropiedades(Properties prp) {
-        return guardarPropiedades(prp, DEF_FICHERO_PRP);
+    public static boolean exportarPropiedades(Properties prp) {
+        return exportarPropiedades(prp, DEF_FICHERO_PRP);
+    }
+
+    // Propiedades > Fichero XML (Por defecto)
+    public static boolean exportarPropiedadesXML(Properties prp) {
+        return exportarPropiedadesXML(prp, DEF_FICHERO_PRP);
     }
 
     // Propiedades > Fichero
-    public static boolean guardarPropiedades(Properties prp, String fichero) {
+    public static boolean exportarPropiedades(Properties prp, String fichero) {
         // Semáforo Estado
         boolean procesoOK = false;
 
@@ -71,7 +101,28 @@ public class UtilesApp {
             procesoOK = true;
         } catch (Exception e) {
             // Mensaje de error
-            System.out.println(e);
+            System.out.println("ERROR: Acceso al fichero " + fichero);
+        }
+
+        // Devuelve Estado
+        return procesoOK;
+    }
+
+    // Propiedades > Fichero XML
+    public static boolean exportarPropiedadesXML(Properties prp, String fichero) {
+        // Semáforo Estado
+        boolean procesoOK = false;
+
+        // Proceso de salvaguarda de propiedades
+        try (FileOutputStream fosXml = new FileOutputStream(fichero)) {
+            // Guarda las propiedades
+            prp.storeToXML(fosXml, null);
+
+            // Proceso OK
+            procesoOK = true;
+        } catch (Exception e) {
+            // Mensaje de error
+            System.out.println("ERROR: Acceso al fichero " + fichero);
         }
 
         // Devuelve Estado
