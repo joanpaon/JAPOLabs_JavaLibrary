@@ -18,6 +18,7 @@ package org.japo.java.libraries;
 import java.awt.Color;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import javax.swing.JTextField;
 
 /**
@@ -27,26 +28,41 @@ import javax.swing.JTextField;
 public class UtilesValidacion {
 
     // Dato + Expresión Regular
-    public static boolean validarDato(String dato, String expReg) {
+    public static boolean validarDato(String dato, String er) {
         // Semáforo de validación
         boolean testOK = false;
 
-        // Realizar Validación
+        // Proceso de validación
         try {
-            // Patrón de la expresión regular
-            Pattern patron = Pattern.compile(expReg);
+            // Compila la expresión regular
+            Pattern patron = Pattern.compile(er);
 
-            // Detector Texto de Prueba
+            // Genera el motor de búsqueda
             Matcher detector = patron.matcher(dato);
 
             // Averiguar Coincidencia
             testOK = detector.matches();
-        } catch (Exception e) {
+        } catch (PatternSyntaxException e) {
             System.out.println(e);
         }
 
         // Devolver Semáforo
         return testOK;
+    }
+
+    // Texto + Expresión Regular
+    public static Matcher buscarPatron(String texto, String er) {
+        // Compila la expresión regular
+        Pattern patron = Pattern.compile(er);
+
+        // Genera el motor de búsqueda
+        Matcher detector = patron.matcher(texto);
+
+        // Realiza la comprobación
+        detector.find();
+
+        // Retorno del resultado
+        return detector;
     }
 
     // Campo de texto con DNI + Texto campo vacío
