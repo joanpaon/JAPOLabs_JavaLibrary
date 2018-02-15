@@ -53,7 +53,7 @@ public class UtilesEntrada {
     }
 
     // Devuelve un entero entre limites introducido por teclado
-    public static final int leerEnteroRango(String msgUsr, String msgErr, int min, int max) {
+    public static final int leerEntero(String msgUsr, String msgErr, int min, int max) {
         // Numero a devolver
         int dato;
 
@@ -78,9 +78,35 @@ public class UtilesEntrada {
         return dato;
     }
 
+    // Devuelve un entero introducido por teclado de entre una lista de posibles valores
+    public static final int leerEntero(String msgUsr, String msgErr, int lista[]) {
+        // Numero a devolver
+        int dato;
+
+        // Semaforo validacion
+        boolean datoOK;
+
+        // Bucle Validacion
+        do {
+            // Introducir Entero
+            dato = UtilesEntrada.leerEntero(msgUsr, msgErr);
+
+            // Validar Entero
+            datoOK = UtilesArrays.buscar(lista, dato) > -1;
+
+            // Mensaje de error
+            if (!datoOK) {
+                System.out.println(msgErr);
+            }
+        } while (!datoOK);
+
+        // Devolver número
+        return dato;
+    }
+
     // Devuelve un número de DNI
     public static final int leerNumeroDNI(String msgUsr, String msgErr) {
-        return leerEnteroRango(msgUsr, msgErr, UtilesDNI.NUM_MIN, UtilesDNI.NUM_MAX);
+        return leerEntero(msgUsr, msgErr, UtilesDNI.NUM_MIN, UtilesDNI.NUM_MAX);
     }
 
     // Devuelve un caracter introducido por teclado
