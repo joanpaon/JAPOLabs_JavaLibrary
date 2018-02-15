@@ -65,21 +65,6 @@ public class UtilesValidacion {
         return detector;
     }
 
-    // Texto + Expresión Regular
-    public static Matcher buscarPatron(String texto, String er) {
-        // Compila la expresión regular
-        Pattern patron = Pattern.compile(er);
-
-        // Genera el motor de búsqueda
-        Matcher detector = patron.matcher(texto);
-
-        // Realiza la comprobación
-        detector.find();
-
-        // Retorno del resultado
-        return detector;
-    }
-
     // Campo de texto con DNI + Texto campo vacío
     public static boolean validarCampoDNI(
             JTextField txfActual, String textoCampoVacio) {
