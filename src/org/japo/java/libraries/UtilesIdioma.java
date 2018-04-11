@@ -86,5 +86,4 @@ public class UtilesIdioma {
         // Devuelve nombre
         return nombre;
     }
-
 }

@@ -19,6 +19,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 /**
@@ -57,21 +58,21 @@ public class UtilesBD {
     public static final Connection obtenerConexion() throws SQLException {
         // Referencia a la Conexión
         Connection con;
-        
+
         if (new File(FICHERO_PRP).exists()) {
             // Cargar Propiedades
             Properties prp = UtilesApp.importarPropiedades(FICHERO_PRP);
-            
+
             // Obtener Conexión
             con = obtenerConexion(prp);
         } else {
             // Aviso 
             System.out.println("ERROR: Fichero Propiedades BD NO existe");
-            
+
             // Obtener Conexión
             con = obtenerConexion(DEF_CADENA_CON);
         }
-        
+
         // Devolver Conexión
         return con;
     }
@@ -83,14 +84,14 @@ public class UtilesBD {
 
     // Obtiene Conexión con BD - Parámetros
     public static final Connection obtenerConexion(
-            String protocolo, String host, String puerto, String db,
-            String usuario, String password) throws SQLException {
+            String prot, String host, String port, String db,
+            String user, String pass) throws SQLException {
         // Definir cadena de conexión
         String cadenaConexion = String.format(
-                FORMATO_CON, protocolo, host, puerto, db, usuario, password);
+                FORMATO_CON, prot, host, port, db, user, pass);
 
         // Realizar la conexión
-        return DriverManager.getConnection(cadenaConexion);
+        return obtenerConexion(cadenaConexion);
     }
 
     // Obtiene Conexión con BD - Propiedades
@@ -107,5 +108,37 @@ public class UtilesBD {
 
         // Realizar la conexión
         return DriverManager.getConnection(cadenaConexion);
+    }
+
+    // Obtiene Conexión con BD - Propiedades
+    public static final Connection obtenerConexion(File f) throws SQLException {
+        // Referencia a la Conexión
+        Connection con = null;
+
+        if (f != null && f.exists()) {
+            // Cargar Propiedades
+            Properties prp = UtilesApp.importarPropiedades(f.getName());
+
+            // Obtener Conexión
+            con = obtenerConexion(prp);
+        }
+
+        // Realizar la conexión
+        return con;
+    }
+
+    // SQL Date >> String (dd/MM/yyyy)
+    public static String convertirSQLDate2String(java.sql.Date sqlDate) {
+        // Obtiene milisegundos de fecha
+        long ms = sqlDate.getTime();
+
+        // Genera un objeto java.util.Date
+        java.util.Date utilDate = new java.util.Date(ms);
+
+        // Define un formateador de fecha
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        // Formatea la fecha
+        return sdf.format(utilDate);
     }
 }
