@@ -31,7 +31,7 @@ public class UtilesCSV {
     public static final String SEPARADOR_ESCRITURA = ", ";
 
     // Archivo CSV > Lista Items
-    public static String[] importarItemsCSV(String fichero) throws Exception {
+    public static final String[] importarItemsCSV(String fichero) throws Exception {
         // Lista Items (Vacio)
         String[] items;
 
@@ -49,7 +49,7 @@ public class UtilesCSV {
     }
 
     // Lista Items > Archivo CSV
-    public static void exportarItemsCSV(String[] items, String fichero) throws Exception {
+    public static final void exportarItemsCSV(String[] items, String fichero) throws Exception {
         // Lectura de un fichero de texto
         try (PrintWriter salida = new PrintWriter(new FileWriter(fichero))) {
 

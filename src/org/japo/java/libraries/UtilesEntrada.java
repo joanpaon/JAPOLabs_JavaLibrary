@@ -197,7 +197,7 @@ public class UtilesEntrada {
     }
 
     // Devuelve el Texto introducido
-    public static String leerTexto(String msgUsr) {
+    public static final String leerTexto(String msgUsr) {
         System.out.print(msgUsr);
         return SCN.nextLine();
     }

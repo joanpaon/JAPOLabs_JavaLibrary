@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 public class UtilesValidacion {
 
     // Dato + Expresión Regular
-    public static boolean validarDato(String dato, String er) {
+    public static final boolean validarDato(String dato, String er) {
         // Semáforo de validación
         boolean testOK = false;
 
@@ -51,7 +51,7 @@ public class UtilesValidacion {
     }
 
     // Texto + Expresión Regular
-    public static Matcher buscarPatron(String texto, String er) {
+    public static final Matcher buscarPatron(String texto, String er) {
         // Compila la expresión regular
         Pattern patron = Pattern.compile(er);
 
@@ -66,7 +66,7 @@ public class UtilesValidacion {
     }
 
     // Campo de texto con DNI + Texto campo vacío
-    public static boolean validarCampoDNI(
+    public static final boolean validarCampoDNI(
             JTextField txfActual, String textoCampoVacio) {
         // Texto del campo - No espaciadores
         String textoActual = txfActual.getText().trim();
@@ -91,7 +91,7 @@ public class UtilesValidacion {
     }
 
     // Campo de texto con FECHA + Texto campo vacío
-    public static boolean validarCampoFecha(
+    public static final boolean validarCampoFecha(
             JTextField txfActual, String textoCampoVacio) {
         // Texto del campo - No espaciadores
         String textoActual = txfActual.getText().trim();
@@ -116,7 +116,7 @@ public class UtilesValidacion {
     }
 
     // Campo de texto con DATO + ExpReg + Texto campo vacío
-    public static boolean validarCampoTexto(
+    public static final boolean validarCampoTexto(
             JTextField txfActual, String expReg, String textoCampoVacio) {
         // Texto del campo - No espaciadores
         String textoActual = txfActual.getText().trim();
@@ -144,7 +144,7 @@ public class UtilesValidacion {
     }
 
     // Campo de texto con DATO + Lista + Texto campo vacío
-    public static boolean validarCampoTextoLista(
+    public static final boolean validarCampoTextoLista(
             JTextField txfActual, String[] lista, String textoCampoVacio) {
         // Texto del campo - No espaciadores
         String textoActual = txfActual.getText().trim();
@@ -172,7 +172,7 @@ public class UtilesValidacion {
     }
 
     // Validar URL
-    public static boolean validarURL(String url) {
+    public static final boolean validarURL(String url) {
         // Expresión Regular
         final String ER = "^(https?://)?(([\\w!~*'().&=+$%-]+: )?[\\w!~*'().&=+$%-]+@)?(([0-9]{1,3}\\.){3}[0-9]{1,3}|([\\w!~*'()-]+\\.)*([\\w^-][\\w-]{0,61})?[\\w]\\.[a-z]{2,6})(:[0-9]{1,4})?((/*)|(/+[\\w!~*'().;?:@&=+$,%#-]+)+/*)$";
 
@@ -181,7 +181,7 @@ public class UtilesValidacion {
     }
 
     // Validar email
-    public static boolean validarEMail(String email) {
+    public static final boolean validarEMail(String email) {
         // Expresión Regular
         final String ER = "[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*";
 
@@ -190,7 +190,7 @@ public class UtilesValidacion {
     }
 
     // Validar Dato < Lista Datos
-    public static boolean validarDatoLista(String dato, String[] lista) {
+    public static final boolean validarDatoLista(String dato, String[] lista) {
         // Semáforo Validación
         boolean validacionOK = false;
 
@@ -216,7 +216,7 @@ public class UtilesValidacion {
     }
 
     // Validación Fecha - Campos Separados - Expresión Regular
-    public static boolean validarFechaExpReg(int dia, int mes, int any) {
+    public static final boolean validarFechaExpReg(int dia, int mes, int any) {
         // Construye la fecha a partir de sus componentes
         String fecha = String.format("%02d"
                 + UtilesFecha.ER_SEP_FECHA.charAt(1) + "%02d"
@@ -227,7 +227,7 @@ public class UtilesValidacion {
     }
 
     // Validación Fecha - Campos Separados - No dependencias
-    public static boolean validarFechaNoDep(int dia, int mes, int any) {
+    public static final boolean validarFechaNoDep(int dia, int mes, int any) {
         return dia >= 1 && dia <= 31
                 && (mes == 1 || mes == 3 || mes == 5
                 || mes == 7 || mes == 8 || mes == 10
@@ -242,7 +242,7 @@ public class UtilesValidacion {
     }
 
     // Validación Fecha - Campos Separados
-    public static boolean validarFecha(int dia, int mes, int any) {
+    public static final boolean validarFecha(int dia, int mes, int any) {
         // Calcula cuantos dias tiene el mes de la fecha
         int numDias = UtilesFecha.obtenerDiasMes(mes, any);
 
@@ -251,17 +251,17 @@ public class UtilesValidacion {
     }
 
     // Comprobar si el año es bisiesto
-    public static boolean validarBisiesto(int any) {
+    public static final boolean validarBisiesto(int any) {
         return any % 400 == 0 || any % 100 != 0 && any % 4 == 0;
     }
 
     // Validación Fecha - Texto sin gesglosar - Expresión Regular
-    public static boolean validarFechaExpReg(String fecha) {
+    public static final boolean validarFechaExpReg(String fecha) {
         return UtilesValidacion.validarDato(fecha, UtilesFecha.ER_FECHA);
     }
 
     // Validación Fecha - Texto sin gesglosar
-    public static boolean validarFecha(String fecha) {
+    public static final boolean validarFecha(String fecha) {
         // Extrae los componentes de la fecha
         int dia = UtilesFecha.obtenerDiaFecha(fecha);
         int mes = UtilesFecha.obtenerMesFecha(fecha);
@@ -272,17 +272,17 @@ public class UtilesValidacion {
     }
 
     // Valida DNI - Formato texto
-    public static boolean validarDNI(String dni) {
+    public static final boolean validarDNI(String dni) {
         // Semáforo de validación
         boolean dniOK = false;
 
         // Validar DNI
         try {
-            // Extraer DNI
-            int num = UtilesDNI.obtenerNumero(dni);
+            // Extraer número de DNI
+            int num = UtilesDNI.extraerNumeroDNI(dni);
 
-            // Extraer LETRA
-            char ctr = UtilesDNI.obtenerControl(dni);
+            // Extraer letra de DNI
+            char ctr = UtilesDNI.extraerLetraDNI(dni);
 
             // Análisis Concordancia
             dniOK = validarDNI(num, ctr);
@@ -295,39 +295,12 @@ public class UtilesValidacion {
     }
 
     // Valida DNI - Desglosado
-    public static boolean validarDNI(int num, char ctr) {
-        return UtilesDNI.calcularControl(num) == ctr;
+    public static final boolean validarDNI(int num, char ctr) {
+        return UtilesDNI.calcularLetraDNI(num) == ctr;
     }
 
     // Valida la parte del NUMERO del DNI (sin el control)
-    public static boolean validarNumeroDNI(String dato) {
-        // Semáforo de validación
-        boolean testOK;
-
-        // Análisis
-        try {
-            // DNI Residentes Extranjeros
-            if ("XYZ".contains(dato.toUpperCase().charAt(0) + "")) {
-                // DNI Residentes Extranjeros
-                String aux = UtilesDNI.procesarDigitoInicial(dato);
-
-                // Obtiene el número
-                int num = Integer.parseInt(aux);
-
-                // Comprueba Rango
-                testOK = num >= UtilesDNI.EXT_MIN && num <= UtilesDNI.EXT_MAX;
-            } else {
-                // Obtiene el número
-                int num = Integer.parseInt(dato);
-
-                // Comprueba Rango
-                testOK = num >= UtilesDNI.NUM_MIN && num <= UtilesDNI.NUM_MAX;
-            }
-        } catch (NumberFormatException e) {
-            testOK = false;
-        }
-
-        // Devolver validación
-        return testOK;
+    public static final boolean validarNumeroDNI(String dato) {
+        return validarDato(dato, UtilesDNI.ER_DNI);
     }
 }

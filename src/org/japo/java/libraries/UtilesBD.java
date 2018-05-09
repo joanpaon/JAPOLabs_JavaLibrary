@@ -128,7 +128,7 @@ public class UtilesBD {
     }
 
     // SQL Date >> String (dd/MM/yyyy)
-    public static String convertirSQLDate2String(java.sql.Date sqlDate) {
+    public static final String convertirSQLDate2String(java.sql.Date sqlDate) {
         // Obtiene milisegundos de fecha
         long ms = sqlDate.getTime();
 

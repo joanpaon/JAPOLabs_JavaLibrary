@@ -100,7 +100,7 @@ public class UtilesFecha {
             = "(" + ER_FECHA_DIA28 + "|" + ER_FECHA_DIA29 + "|" + ER_FECHA_DIA30 + "|" + ER_FECHA_DIA31 + ")";
 
     // Obtener el número de dias del mes del año
-    public static int obtenerDiasMes(int mes, int any) {
+    public static final int obtenerDiasMes(int mes, int any) {
         // Número de dias del mes
         int numDias;
 
@@ -133,17 +133,17 @@ public class UtilesFecha {
     }
 
     // Día (Número) > Día (Nombre)
-    public static String obtenerNombreDia(int dia) {
+    public static final String obtenerNombreDia(int dia) {
         return dia >= 1 && dia <= NOMBRE_DIA.length ? NOMBRE_DIA[dia - 1] : "indefinido";
     }
 
     // Mes (Número) > Mes (Nombre)
-    public static String obtenerNombreMes(int mes) {
+    public static final String obtenerNombreMes(int mes) {
         return mes >= 1 && mes <= NOMBRE_MES.length ? NOMBRE_MES[mes - 1] : "indefinido";
     }
 
     // Fecha (String) > dia (int)
-    public static int obtenerDiaFecha(String fecha) {
+    public static final int obtenerDiaFecha(String fecha) {
         // Dia de la fecha
         int dia;
 
@@ -162,7 +162,7 @@ public class UtilesFecha {
     }
 
     // Fecha (String) > mes (int)
-    public static int obtenerMesFecha(String fecha) {
+    public static final int obtenerMesFecha(String fecha) {
         // Mes de la fecha
         int mes;
 
@@ -181,7 +181,7 @@ public class UtilesFecha {
     }
 
     // Fecha (String) > año (int)
-    public static int obtenerAnyFecha(String fecha) {
+    public static final int obtenerAnyFecha(String fecha) {
         // Año de la fecha
         int any;
 
@@ -200,22 +200,22 @@ public class UtilesFecha {
     }
 
     // Número del Dia del Mes de Hoy
-    public static int obtenerDiaHoy() {
+    public static final int obtenerDiaHoy() {
         return new GregorianCalendar().get(Calendar.DAY_OF_MONTH);
     }
 
     // Número del Mes de Hoy
-    public static int obtenerMesHoy() {
+    public static final int obtenerMesHoy() {
         return new GregorianCalendar().get(Calendar.MONTH) + 1;
     }
 
     // Número del Año de Hoy
-    public static int obtenerAnyHoy() {
+    public static final int obtenerAnyHoy() {
         return new GregorianCalendar().get(Calendar.YEAR);
     }
 
     // Fecha de Hoy - dd/mm/aaaa
-    public static String obtenerFechaHoy() {
+    public static final String obtenerFechaHoy() {
         // Obtiene Fecha Hoy
         Date fechaHoy = new Date();
 

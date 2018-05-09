@@ -57,7 +57,7 @@ public class UtilesIdioma {
         "Freitag", "Samstag", "Sontag"};
 
     // ATENCION >>> Lunes: 1 - Domingo: 7 <<<
-    public static String generarNombreDia(int dia, int idioma) {
+    public static final String generarNombreDia(int dia, int idioma) {
         // Día actual
         String nombre;
 
