@@ -21,7 +21,7 @@ import java.util.Random;
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class UtilesDNI {
+public final class UtilesDNI {
 
     // Secuencia letras DNI
     public static final String SECUENCIA = "TRWAGMYFPDXBNJZSQVHLCKE";
@@ -56,22 +56,22 @@ public class UtilesDNI {
     public static final String ER_DNI = ER_NUM_DNI + "[" + SECUENCIA + "]";
 
     // Calcula letra a partir del número de DNI
-    public static final char calcularLetraDNI(int dni) {
+    public static final char calcularControl(int dni) {
         return SECUENCIA.charAt(dni % SECUENCIA.length());
     }
 
     // Extraer número del DNI
-    public static final int extraerNumeroDNI(String dni) throws Exception {
+    public static final int extraerNumero(String dni) throws Exception {
         // Almacen del DNI extraido
         int numero;
 
         // Validar Formato DNI
-        if (!UtilesValidacion.validarDato(dni, ER_DNI)) {
+        if (!UtilesValidacion.validar(dni, ER_DNI)) {
             throw new Exception("ERROR: Formato de DNI incorrecto");
         }
 
         // Extraer Prefijo Numérico
-        String prefijo = normalizarNumeroDNI(dni.substring(0, NUM_DIG_DNI));
+        String prefijo = normalizarNumero(dni.substring(0, NUM_DIG_DNI));
 
         // Convierte el texto a entero
         numero = Integer.parseInt(prefijo);
@@ -81,18 +81,21 @@ public class UtilesDNI {
     }
 
     // Número DNI Extranjeros >> Número DNI Normalizado
-    public static final String normalizarNumeroDNI(String numDNI) throws Exception {
+    public static final String normalizarNumero(String numDNI) throws Exception {
         // Número DNI Normalizado
         String numDNINorm;
 
         // Proceso Normalización
         switch (numDNI.charAt(0)) {
+            case 'x':
             case 'X':
                 numDNINorm = '0' + numDNI.substring(1);
                 break;
+            case 'y':
             case 'Y':
                 numDNINorm = '1' + numDNI.substring(1);
                 break;
+            case 'z':
             case 'Z':
                 numDNINorm = '2' + numDNI.substring(1);
                 break;
@@ -105,10 +108,9 @@ public class UtilesDNI {
     }
 
     // Extraer letra del DNI
-    public static char extraerLetraDNI(String dni) throws Exception {
-
+    public static final char extraerControl(String dni) throws Exception {
         // Validar Formato DNI
-        if (!UtilesValidacion.validarDato(dni, ER_DNI)) {
+        if (!UtilesValidacion.validar(dni, ER_DNI)) {
             throw new Exception("Error: Formato erróneo de DNI");
         }
 
@@ -116,15 +118,67 @@ public class UtilesDNI {
         return dni.charAt(NUM_DIG_DNI);
     }
 
-    // Genera un DNI aleatorio
-    public static final String generarDNI() {
+    // Genera un DNI (Completo) aleatorio
+    public static final String generar() {
         // Generar Número
         int num = new Random().nextInt(NUM_MAX - NUM_MIN + 1) + NUM_MIN;
 
         // Generar Control
-        char ctr = calcularLetraDNI(num);
+        char ctr = calcularControl(num);
 
         // Devolver DNI
         return "" + num + ctr;
+    }
+    
+    // Valida DNI - Formato texto
+    public static final boolean validar(String dni) {
+        return UtilesValidacion.validar(dni, ER_DNI);
+    }
+
+    // Valida DNI - Desglosado
+    public static final boolean validar(int num, char ctr) {
+        return calcularControl(num) == ctr;
+    }
+
+    // Valida la parte del NUMERO del DNI (sin el control)
+    public static final boolean validarNumero(String num) {
+        return UtilesValidacion.validar(num, ER_NUM_DNI);
+    }
+
+    // Consola > DNI (Completo)
+    public static final String leerDNI(String msgNum, String msgCtr, String msgErr) {
+        // Variables 
+        int num;
+        char ctr;
+
+        // Proceso de entrada
+        boolean dniOK;
+
+        do {
+            // Componentes del DNI
+            num = leerNumeroDNI(msgNum, msgErr);
+            ctr = leerControlDNI(msgCtr, msgErr);
+
+            // Valida DNI
+            dniOK = validar(num, ctr);
+
+            // DNI Erróneo
+            if (!dniOK) {
+                System.out.println(msgErr);
+            }
+        } while (!dniOK);
+
+        // Devolver dato
+        return "" + num + ctr;
+    }
+
+    // Consola >> Número de DNI
+    public static final int leerNumeroDNI(String msgUsr, String msgErr) {
+        return UtilesEntrada.leerEntero(msgUsr, msgErr, UtilesDNI.NUM_MIN, UtilesDNI.NUM_MAX);
+    }
+
+    // Consola >> Carácter de control de DNI
+    public static final char leerControlDNI(String msgUsr, String msgErr) {
+        return UtilesEntrada.leerCaracter(msgUsr, msgErr);
     }
 }

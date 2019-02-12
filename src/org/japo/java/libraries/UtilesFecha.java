@@ -24,7 +24,7 @@ import java.util.GregorianCalendar;
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class UtilesFecha {
+public final class UtilesFecha {
 
     // Nombres de los dias de la semana
     public static final String[] NOMBRE_DIA = {
@@ -122,7 +122,7 @@ public class UtilesFecha {
                 numDias = 30;
                 break;
             case 2:
-                numDias = UtilesValidacion.validarBisiesto(any) ? 29 : 28;
+                numDias = validarBisiesto(any) ? 29 : 28;
                 break;
             default:
                 numDias = 0;
@@ -224,5 +224,26 @@ public class UtilesFecha {
 
         // Formatea y devuelve la Fecha
         return sdf.format(fechaHoy);
+    }
+
+    // Validación Fecha - Texto sin gesglosar - Expresión Regular
+    public static final boolean validarFecha(String fecha) {
+        return UtilesValidacion.validar(fecha, UtilesFecha.ER_FECHA);
+    }
+
+    // Validación Fecha - Campos Separados - Expresión Regular
+    public static final boolean validarFecha(int dia, int mes, int any) {
+        // Construye la fecha a partir de sus componentes
+        String fecha = String.format("%02d"
+                + UtilesFecha.ER_SEP_FECHA.charAt(1) + "%02d"
+                + UtilesFecha.ER_SEP_FECHA.charAt(1) + "%d", dia, mes, any);
+
+        // Devuelve la validación de la fecha
+        return UtilesValidacion.validar(fecha, UtilesFecha.ER_FECHA);
+    }
+
+    // Comprobar si el año es bisiesto
+    public static final boolean validarBisiesto(int any) {
+        return any % 400 == 0 || any % 100 != 0 && any % 4 == 0;
     }
 }

@@ -19,7 +19,7 @@ package org.japo.java.libraries;
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class UtilesPrimitivos {
+public final class UtilesPrimitivos {
 
     // Constantes referenciales
     public static final int MAYOR = 1;

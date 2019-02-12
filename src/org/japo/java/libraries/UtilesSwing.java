@@ -15,6 +15,7 @@
  */
 package org.japo.java.libraries;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -38,6 +39,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeListener;
@@ -364,5 +366,73 @@ public class UtilesSwing {
 
         // Devuelve fuente
         return f;
+    }
+
+    // Campo de texto con DATO + ExpReg + Texto campo vacío
+    public static final boolean validarCampo(
+            JTextField txfActual, String expReg, String textoCampoVacio) {
+        // Texto del campo - No espaciadores
+        String textoActual = txfActual.getText().trim();
+
+        // Comprueba campo vacío
+        textoActual = textoActual.equals("") ? textoCampoVacio : textoActual;
+
+        // Restaura el texto formateado
+        txfActual.setText(textoActual);
+
+        // Valida el Dato
+        boolean validacionOK = UtilesValidacion.validar(textoActual, expReg);
+
+        // Señala la validación
+        if (validacionOK) {
+            // Señalar Contenido Correcto
+            txfActual.setForeground(Color.BLACK);
+        } else {
+            // Señalar Contenido Erróneo
+            txfActual.setForeground(Color.RED);
+        }
+
+        // Resultado de la validación
+        return validacionOK;
+    }
+
+    // Campo de texto con DATO + Lista + Texto campo vacío
+    public static final boolean validarCampo(
+            JTextField txfActual, String[] lista, String textoCampoVacio) {
+        // Texto del campo - No espaciadores
+        String texto = txfActual.getText().trim();
+
+        // Comprueba campo vacío
+        texto = texto.equals("") ? textoCampoVacio : texto;
+
+        // Restaura el texto formateado
+        txfActual.setText(texto);
+
+        // Valida el Dato
+        boolean validacionOK = UtilesValidacion.validar(texto, lista);
+
+        // Señala la validación
+        if (validacionOK) {
+            // Señalar Contenido Correcto
+            txfActual.setForeground(Color.BLACK);
+        } else {
+            // Señalar Contenido Erróneo
+            txfActual.setForeground(Color.RED);
+        }
+
+        // Resultado de la validación
+        return validacionOK;
+    }
+
+    // Campo de texto con DNI + Texto campo vacío
+    public static final boolean validarCampoDNI(
+            JTextField txfActual, String textoCampoVacio) {
+        return validarCampo(txfActual, UtilesDNI.ER_DNI, textoCampoVacio);
+    }
+
+    // Campo de texto con FECHA + Texto campo vacío
+    public static final boolean validarCampoFecha(
+            JTextField txfActual, String textoCampoVacio) {
+        return validarCampo(txfActual, UtilesFecha.ER_FECHA, textoCampoVacio);
     }
 }

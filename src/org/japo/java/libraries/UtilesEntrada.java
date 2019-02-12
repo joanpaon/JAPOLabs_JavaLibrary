@@ -15,6 +15,11 @@
  */
 package org.japo.java.libraries;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -23,10 +28,19 @@ import java.util.Scanner;
  */
 public class UtilesEntrada {
 
-    // Scanner --- > Entrada de acentos con Windows
+    // Formatos Fecha
+    public static final String FORMATO_FECHA01 = "dd/MM/yyyy";
+
+    // Formatos Hora
+    public static final String FORMATO_HORA01 = "hh:mm:ss";
+
+    // Scanner + Codificación Windows
     public static final Scanner SCN = new Scanner(System.in, "ISO-8859-1");
 
-    // Devuelve un entero introducido por teclado
+    // Locale Spanish
+    public static final Locale LCL = new Locale("es", "ES");
+
+    // Consola >> Entero
     public static final int leerEntero(String msgUsr, String msgErr) {
         // Dato a introducir
         int dato = 0;
@@ -52,7 +66,7 @@ public class UtilesEntrada {
         return dato;
     }
 
-    // Devuelve un entero entre limites introducido por teclado
+    // Consola >> Entero [min .. max]
     public static final int leerEntero(String msgUsr, String msgErr, int min, int max) {
         // Numero a devolver
         int dato;
@@ -78,7 +92,7 @@ public class UtilesEntrada {
         return dato;
     }
 
-    // Devuelve un entero introducido por teclado de entre una lista de posibles valores
+    // Consola >> Entero [Lista posibles Valores]
     public static final int leerEntero(String msgUsr, String msgErr, int lista[]) {
         // Numero a devolver
         int dato;
@@ -104,12 +118,85 @@ public class UtilesEntrada {
         return dato;
     }
 
-    // Devuelve un número de DNI
-    public static final int leerNumeroDNI(String msgUsr, String msgErr) {
-        return leerEntero(msgUsr, msgErr, UtilesDNI.NUM_MIN, UtilesDNI.NUM_MAX);
+    // Consola >> Real
+    public static final double leerReal(String msgUsr, String msgErr) {
+        // Dato a introducir
+        double dato = 0;
+
+        // Proceso de lectura
+        boolean lecturaOK = false;
+        do {
+            try {
+                // Entrada dato
+                System.out.print(msgUsr);
+                dato = SCN.nextDouble();
+
+                // Marca el semáforo
+                lecturaOK = true;
+            } catch (Exception e) {
+                System.out.println(msgErr);
+            } finally {
+                SCN.nextLine();
+            }
+        } while (!lecturaOK);
+
+        // Devolver dato
+        return dato;
     }
 
-    // Devuelve un caracter introducido por teclado
+    // Consola >> Real [min .. max]
+    public static final double leerReal(String msgUsr, String msgErr, double min, double max) {
+        // Numero a devolver
+        double dato;
+
+        // Semaforo validacion
+        boolean rangoOK;
+
+        // Bucle Validacion
+        do {
+            // Introducir Entero
+            dato = leerReal(msgUsr, msgErr);
+
+            // Validar Entero
+            rangoOK = dato >= min && dato <= max;
+
+            // Mensaje de error
+            if (!rangoOK) {
+                System.out.println(msgErr);
+            }
+        } while (!rangoOK);
+
+        // Devolver número
+        return dato;
+    }
+
+    // Consola >> Real [Lista posibles Valores]
+    public static final double leerReal(String msgUsr, String msgErr, double lista[]) {
+        // Numero a devolver
+        double dato;
+
+        // Semaforo validacion
+        boolean datoOK;
+
+        // Bucle Validacion
+        do {
+            // Introducir Entero
+            dato = UtilesEntrada.leerEntero(msgUsr, msgErr);
+
+            // Validar Entero
+            datoOK = UtilesArrays.buscar(lista, dato) > -1;
+
+            // Mensaje de error
+            if (!datoOK) {
+                System.out.println(msgErr);
+            }
+        } while (!datoOK);
+
+        // Devolver número
+        return dato;
+    }
+
+    // Consola >> Carácter
     public static final char leerCaracter(String msgUsr, String msgErr) {
         // Dato a introducir
         char dato = 0;
@@ -133,8 +220,8 @@ public class UtilesEntrada {
         return dato;
     }
 
-    // Devuelve una opción
-    public static final char leerOpcion(String opciones, String msgUsr, String msgErr) {
+    // Consola >> Carácter [Lista posibles Opciones]
+    public static final char leerCaracter(String msgUsr, String msgErr, String opciones) {
         // Dato a introducir
         char dato = 0;
 
@@ -161,44 +248,81 @@ public class UtilesEntrada {
         return dato;
     }
 
-    // Devuelve un caracter de control de DNI
-    public static final char leerControlDNI(String msgUsr, String msgErr) {
-        return leerCaracter(msgUsr, msgErr);
-    }
+    // Consola >> Carácter [min .. max]
+    public static final char leerCaracter(String msgUsr, String msgErr, char min, char max) {
+        // Dato a introducir
+        char dato;
 
-    // Devuelve un DNI
-    public static final String leerDNI(String msgNum, String msgCtr, String msgErr) {
-        // Mensajes
-        final String MSG_ERR = "ERROR: DNI incorrecto";
+        // Semaforo validacion
+        boolean rangoOK;
 
-        // Variables 
-        int num;
-        char ctr;
-
-        // Proceso de entrada
-        boolean dniOK;
-
+        // Bucle Validacion
         do {
-            // Componentes del DNI
-            num = leerNumeroDNI(msgNum, msgErr);
-            ctr = leerControlDNI(msgCtr, msgErr);
+            // Introducir Entero
+            dato = leerCaracter(msgUsr, msgErr);
 
-            // Valida DNI
-            dniOK = UtilesValidacion.validarDNI(num, ctr);
+            // Validar Entero
+            rangoOK = dato >= min && dato <= max;
 
-            // DNI Erróneo
-            if (!dniOK) {
-                System.out.println(MSG_ERR);
+            // Mensaje de error
+            if (!rangoOK) {
+                System.out.println(msgErr);
             }
-        } while (!dniOK);
+        } while (!rangoOK);
 
-        // Devolver dato
-        return "" + num + ctr;
+        // Devolver número
+        return dato;
     }
 
-    // Devuelve el Texto introducido
+    // Consola >> Texto
     public static final String leerTexto(String msgUsr) {
         System.out.print(msgUsr);
         return SCN.nextLine();
+    }
+
+    // Consola >> Calendar
+    public static final Calendar leerDatoTemporal(
+            String patron, Locale locale, String msgUsr, String msgErr) {
+        // Formateador
+        SimpleDateFormat sdf = new SimpleDateFormat(patron, locale);
+
+        // Referencia Calendar
+        Calendar calendar = null;
+
+        // Intro + Parse
+        try {
+            // Consola >> Dato (Texto)
+            String texto = leerTexto(msgUsr);
+
+            // Texto >> Date
+            Date date = sdf.parse(texto);
+
+            // Instancia Objeto Calendar
+            calendar = Calendar.getInstance();
+
+            // Date >> Calendar
+            calendar.setTime(date);
+        } catch (ParseException e) {
+            System.out.println(msgErr);
+        }
+
+        // Devuelve Calendar
+        return calendar;
+    }
+
+    // Consola >> Calendar (Locale ESP)
+    public static final Calendar leerDatoTemporal(
+            String patron, String msgUsr, String msgErr) {
+        return leerDatoTemporal(patron, LCL, msgUsr, msgErr);
+    }
+
+    // Consola >> Fecha
+    public static final Calendar leerFecha(String msgUsr, String msgErr) {
+        return leerDatoTemporal(FORMATO_FECHA01, msgUsr, msgErr);
+    }
+
+    // Consola >> Hora
+    public static final Calendar leerHora(String msgUsr, String msgErr) {
+        return leerDatoTemporal(FORMATO_HORA01, msgUsr, msgErr);
     }
 }
