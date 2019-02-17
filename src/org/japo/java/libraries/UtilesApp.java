@@ -15,6 +15,8 @@
  */
 package org.japo.java.libraries;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -79,7 +81,7 @@ public class UtilesApp {
         // Devolver Propiedades
         return prp;
     }
-    
+
     // Fichero Propiedades XML > Objeto Propiedades
     public static final Properties importarPropiedadesXML(String fichero) {
         // Objeto de Propiedades Vacio
@@ -207,10 +209,10 @@ public class UtilesApp {
 
             // Vacia Buffers
             oos.flush();
-}
+        }
     }
 
-    // Objeto > Serialización Binaria
+    // Objeto > Deserialización Binaria
     public static final Object deserializarBin(String archivo)
             throws Exception {
 
@@ -221,6 +223,36 @@ public class UtilesApp {
                 FileInputStream fis = new FileInputStream(archivo);
                 ObjectInputStream ois = new ObjectInputStream(fis)) {
             objeto = ois.readObject();
+        }
+
+        return objeto;
+    }
+
+    // Objeto > Serialización XML
+    public static final void serializarXML(Object objeto, String archivo)
+            throws Exception {
+        try (
+                FileOutputStream fos = new FileOutputStream(archivo);
+                XMLEncoder salida = new XMLEncoder(fos)) {
+            // Escribe el objeto
+            salida.writeObject(objeto);
+
+            // Vacia Buffers
+            salida.flush();
+        }
+    }
+
+    // Objeto > Deserialización XML
+    public static final Object deserializarXML(String archivo)
+            throws Exception {
+
+        // Referencia Objeto
+        Object objeto = null;
+
+        try (
+                FileInputStream fis = new FileInputStream(archivo);
+                XMLDecoder entrada = new XMLDecoder(fis)) {
+            objeto = entrada.readObject();
         }
 
         return objeto;
