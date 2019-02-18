@@ -31,17 +31,20 @@ public class UtilesCSV {
     public static final String SEPARADOR_ESCRITURA = ", ";
 
     // Archivo CSV > Lista Items
-    public static final String[] importarItemsCSV(String fichero) throws Exception {
+    public static final String[] importar(String fichero)
+            throws Exception {
         // Lista Items (Vacio)
         String[] items;
 
         // Importar Items
-        try (BufferedReader entrada = new BufferedReader(new FileReader(fichero))) {
-            // Fichero CSV > Linea Items
-            String linea = entrada.readLine();
+        try (
+                FileReader fr = new FileReader(fichero);
+                BufferedReader br = new BufferedReader(fr)) {
+            // Fichero CSV > Linea Items (1ª Linea)
+            String linea = br.readLine();
 
             // Linea Items > Lista Items
-            items = linea.split(SEPARADOR_LECTURA);
+            items = convertir(linea);
         }
 
         // Devolver Items
@@ -49,17 +52,44 @@ public class UtilesCSV {
     }
 
     // Lista Items > Archivo CSV
-    public static final void exportarItemsCSV(String[] items, String fichero) throws Exception {
+    public static final void exportar(String[] items, String fichero)
+            throws Exception {
         // Lectura de un fichero de texto
-        try (PrintWriter salida = new PrintWriter(new FileWriter(fichero))) {
+        try (
+                FileWriter fw = new FileWriter(fichero);
+                PrintWriter pw = new PrintWriter(fw)) {
+
+            // Lista Items > Linea Items
+            String linea = convertir(items);
 
             // Primer item por separado
-            salida.print(items[0]);
+            pw.print(linea);
 
-            // Resto de los items
-            for (int i = 1; i < items.length; i++) {
-                salida.print(SEPARADOR_ESCRITURA + items[i]);
-            }
+            // Confirmacion
+            pw.flush();
         }
+    }
+
+    // Array String > Secuencia String
+    public static final String convertir(String[] items) {
+        // Acumulador
+        StringBuilder sb = new StringBuilder();
+
+        // Primer item por separado
+        sb.append(items[0]);
+
+        // Resto de los items
+        for (int i = 1; i < items.length; i++) {
+            sb.append(UtilesCSV.SEPARADOR_ESCRITURA);
+            sb.append(items[i]);
+        }
+
+        // Devuelve Secuencia
+        return sb.toString();
+    }
+
+    // Secuencia String > Array String
+    public static final String[] convertir(String secuencia) {
+        return secuencia.split(SEPARADOR_LECTURA);
     }
 }
