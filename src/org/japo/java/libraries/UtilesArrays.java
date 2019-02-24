@@ -289,4 +289,45 @@ public final class UtilesArrays {
         
         return lista;
     }
+
+    // int[] > Posicion (Primera) Valor Máximo
+    public static final int obtenerMaximo(int[] lista) {
+        // Primero es maximo
+        int posicion = 0;
+
+        // Recorrer a partir del segundo
+        for (int actual = 1; actual < lista.length; actual++) {
+            posicion = lista[actual] > lista[posicion] ? actual : posicion;
+}
+
+        // Devolver posicion
+        return posicion;
+    }
+
+    // int[] > Posición (Primera) Valor Mínimo
+    public static final int obtenerMinimo(int[] lista) {
+        // Primero es maximo
+        int posicion = 0;
+
+        // Recorrer a partir del segundo
+        for (int actual = 1; actual < lista.length; actual++) {
+            posicion = lista[actual] < lista[posicion] ? actual : posicion;
+        }
+
+        // Devolver posicion
+        return posicion;
+    }
+    
+    public static final int contarOcurrencias(int[] lista, int clave) {
+        // Contador ocurrencias
+        int contador = 0;
+
+        // Recorrer
+        for (int item : lista) {
+            contador = item == clave ? contador + 1 : contador;
+        }
+
+        // Devolver contador
+        return contador;
+    }
 }
