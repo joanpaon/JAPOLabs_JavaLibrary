@@ -38,6 +38,7 @@ public class UtilesApp {
     public static final String DEF_PAQUETE_PRP = "properties";
     public static final String DEF_FICHERO_PRP = "app.properties";
     public static final String DEF_FICHERO_XML = "app.xml";
+    public static final String DEF_RECURSO_PRP = "config/app.properties";
     public static final String DEF_PUERTO_BLOQUEO = "54321";
 
     // Fichero (Por defecto) > Propiedades    
@@ -80,6 +81,11 @@ public class UtilesApp {
 
         // Devolver Propiedades
         return prp;
+    }
+
+    // Recurso Propiedades ( Predefinido ) > Objeto Propiedades
+    public static final Properties importarPropiedadesRecurso() {
+        return importarPropiedadesRecurso(DEF_RECURSO_PRP);
     }
 
     // Fichero Propiedades XML > Objeto Propiedades
