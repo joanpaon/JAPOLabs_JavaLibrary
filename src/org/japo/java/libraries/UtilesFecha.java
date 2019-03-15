@@ -15,10 +15,12 @@
  */
 package org.japo.java.libraries;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  *
@@ -26,6 +28,9 @@ import java.util.GregorianCalendar;
  */
 public final class UtilesFecha {
 
+    // Formato de fecha
+    public static final String FORMATO_FECHA = "dd/MM/yyyy";
+    
     // Nombres de los dias de la semana
     public static final String[] NOMBRE_DIA = {
         "lunes", "martes", "miércoles", "jueves",
@@ -245,5 +250,72 @@ public final class UtilesFecha {
     // Comprobar si el año es bisiesto
     public static final boolean validarBisiesto(int any) {
         return any % 400 == 0 || any % 100 != 0 && any % 4 == 0;
+    }
+
+    // Fecha ( Calendar ) > Fecha ( String )
+    public static final String convertir(Calendar fecha) {
+        return String.format("%02d/%02d/%d", 
+                fecha.get(Calendar.DATE), 
+                fecha.get(Calendar.MONTH), 
+                fecha.get(Calendar.YEAR));
+    }
+
+    // Fecha ( Date ) > Fecha ( String )
+    public static final String convertir(Date fecha) {
+        // Objeto Calendar
+        Calendar c = Calendar.getInstance();
+        
+        // Establece la fecha
+        c.setTime(fecha);
+        
+        // Representación Fecha
+        return String.format("%02d/%02d/%d", 
+                c.get(Calendar.DATE), 
+                c.get(Calendar.MONTH), 
+                c.get(Calendar.YEAR));
+    }
+
+    // Fecha ( String ) > Fecha ( Date )
+    public static final Date convertir(String fecha) throws ParseException {
+        return convertir(fecha, FORMATO_FECHA);
+    }
+    
+    // Fecha ( String ) > Fecha ( Date ) - Formato Personalizado
+    public static final Date convertir(String fecha, String formato) throws ParseException {
+        // Locale ESPAÑA
+        Locale lcl = new Locale("ES", "es");
+
+        // Formateador de Fecha
+        SimpleDateFormat sdf = new SimpleDateFormat(formato, lcl);
+
+        // Devuelve Objeto Date
+        return sdf.parse(fecha);
+    }
+
+    // Calcular dias entre fechas
+    public static final int obtenerDistancia(String fechaIni, String fechaFin) throws ParseException {
+        // Objetos Date
+        Date dateIni = convertir(fechaIni);
+        Date dateFin = convertir(fechaFin);
+
+        // Distancia Fechas >> ms
+        long ms = dateFin.getTime() - dateIni.getTime();
+
+        // ms >> dias
+        return (int) (ms / 1000 / 3600 / 24);
+        
+//        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+    }
+    
+    // Calcular dias entre fechas
+    public static final String obtenerFechaHoy2() {
+        // Fecha del sistema
+        Calendar c = Calendar.getInstance();
+        
+        // Representación texto
+        return String.format("%02d/%02d/%d", 
+                c.get(Calendar.DATE), 
+                c.get(Calendar.MONTH), 
+                c.get(Calendar.YEAR));
     }
 }
