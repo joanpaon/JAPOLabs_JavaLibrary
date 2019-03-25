@@ -30,7 +30,7 @@ public final class UtilesFecha {
 
     // Formato de fecha
     public static final String FORMATO_FECHA = "dd/MM/yyyy";
-    
+
     // Nombres de los dias de la semana
     public static final String[] NOMBRE_DIA = {
         "lunes", "martes", "miércoles", "jueves",
@@ -254,9 +254,9 @@ public final class UtilesFecha {
 
     // Fecha ( Calendar ) > Fecha ( String )
     public static final String convertir(Calendar fecha) {
-        return String.format("%02d/%02d/%d", 
-                fecha.get(Calendar.DATE), 
-                fecha.get(Calendar.MONTH), 
+        return String.format("%02d/%02d/%d",
+                fecha.get(Calendar.DATE),
+                fecha.get(Calendar.MONTH),
                 fecha.get(Calendar.YEAR));
     }
 
@@ -264,32 +264,42 @@ public final class UtilesFecha {
     public static final String convertir(Date fecha) {
         // Objeto Calendar
         Calendar c = Calendar.getInstance();
-        
+
         // Establece la fecha
         c.setTime(fecha);
-        
+
         // Representación Fecha
-        return String.format("%02d/%02d/%d", 
-                c.get(Calendar.DATE), 
-                c.get(Calendar.MONTH), 
+        return String.format("%02d/%02d/%d",
+                c.get(Calendar.DATE),
+                c.get(Calendar.MONTH),
                 c.get(Calendar.YEAR));
     }
 
     // Fecha ( String ) > Fecha ( Date )
-    public static final Date convertir(String fecha) throws ParseException {
+    public static final Date convertir(String fecha) {
         return convertir(fecha, FORMATO_FECHA);
     }
-    
+
     // Fecha ( String ) > Fecha ( Date ) - Formato Personalizado
-    public static final Date convertir(String fecha, String formato) throws ParseException {
+    public static final Date convertir(String fecha, String formato) {
+        // Referencia Fecha
+        Date d = null;
+
         // Locale ESPAÑA
         Locale lcl = new Locale("ES", "es");
 
-        // Formateador de Fecha
-        SimpleDateFormat sdf = new SimpleDateFormat(formato, lcl);
+        try {
+            // Formateador de Fecha
+            SimpleDateFormat sdf = new SimpleDateFormat(formato, lcl);
 
-        // Devuelve Objeto Date
-        return sdf.parse(fecha);
+            // Convierte Fecha
+            d = sdf.parse(fecha);
+        } catch (ParseException e) {
+            System.out.println("ERROR: Conversión cancelada - " + e.getMessage());
+        }
+
+        // Devuelve Fecha Date
+        return d;
     }
 
     // Calcular dias entre fechas
@@ -303,19 +313,19 @@ public final class UtilesFecha {
 
         // ms >> dias
         return (int) (ms / 1000 / 3600 / 24);
-        
+
 //        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
     }
-    
+
     // Calcular dias entre fechas
     public static final String obtenerFechaHoy2() {
         // Fecha del sistema
         Calendar c = Calendar.getInstance();
-        
+
         // Representación texto
-        return String.format("%02d/%02d/%d", 
-                c.get(Calendar.DATE), 
-                c.get(Calendar.MONTH), 
+        return String.format("%02d/%02d/%d",
+                c.get(Calendar.DATE),
+                c.get(Calendar.MONTH),
                 c.get(Calendar.YEAR));
     }
 }
