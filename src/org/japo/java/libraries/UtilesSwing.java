@@ -1,5 +1,5 @@
 /* 
- * Copyright 2017 José A. Pacheco Ondoño - joanpaon@gmail.com.
+ * Copyright 2019 José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.japo.java.libraries;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Image;
@@ -70,10 +69,23 @@ public final class UtilesSwing {
     public static final String LNF_METAL_CLASSNAME = "javax.swing.plaf.metal.MetalLookAndFeel";
     public static final String LNF_NIMBUS_CLASSNAME = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
 
+    // Fuentes Lucida (JRE)
+    public static final String FONT_LUCIDA_SANS_NAME = "Lucida Sans";
+    public static final String FONT_LUCIDA_TYPEWRITER_NAME = "Lucida Sans Typewriter";
+    public static final String FONT_LUCIDA_BRIGHT_NAME = "Lucida Bright";
+
+    // Fuentes Lógicas
+    public static final String FONT_LOGICAL_SERIF_NAME = Font.SERIF;
+    public static final String FONT_LOGICAL_SANS_NAME = Font.SANS_SERIF;
+    public static final String FONT_LOGICAL_MONO_NAME = Font.MONOSPACED;
+    public static final String FONT_LOGICAL_DIALOG_NAME = Font.DIALOG;
+    public static final String FONT_LOGICAL_INPUT_NAME = Font.DIALOG_INPUT;
+
     // Fuente Predeterminada
     public static final String DEF_FONT_FAMILY = Font.SANS_SERIF;
     public static final int DEF_FONT_STYLE = Font.PLAIN;
     public static final int DEF_FONT_SIZE = 12;
+    public static final Font DEF_FONT = new Font(DEF_FONT_FAMILY, DEF_FONT_STYLE, DEF_FONT_SIZE);
 
     // Cerrar Programa Swing
     public static final void terminarPrograma(JFrame f) {
@@ -342,10 +354,9 @@ public final class UtilesSwing {
 
         // Cargar Fuente
         try (InputStream is = new FileInputStream(fichero)) {
-            f = Font.createFont(Font.TRUETYPE_FONT, is).
-                    deriveFont(DEF_FONT_STYLE, DEF_FONT_SIZE);
-        } catch (FontFormatException | IOException e) {
-            f = new Font(DEF_FONT_FAMILY, DEF_FONT_STYLE, DEF_FONT_SIZE);
+            f = Font.createFont(Font.TRUETYPE_FONT, is);
+        } catch (Exception e) {
+            f = null;
         }
 
         // Devuelve fuente
@@ -359,14 +370,83 @@ public final class UtilesSwing {
 
         // Cargar Fuente
         try (InputStream is = ClassLoader.getSystemResourceAsStream(recurso)) {
-            f = Font.createFont(Font.TRUETYPE_FONT, is).
-                    deriveFont(DEF_FONT_STYLE, DEF_FONT_SIZE);
-        } catch (FontFormatException | IOException e) {
-            f = new Font(DEF_FONT_FAMILY, DEF_FONT_STYLE, DEF_FONT_SIZE);
+            f = Font.createFont(Font.TRUETYPE_FONT, is);
+        } catch (Exception e) {
+            f = null;
         }
 
         // Devuelve fuente
         return f;
+    }
+
+    // Fuente Original ( null ) > Fuente Derivada ( Estilo )
+    public static final Font derivarFuente(Font fuente, int estilo) {
+        return fuente == null || !(fuente instanceof Font) ? null
+                : fuente.deriveFont(estilo);
+    }
+
+    // Fuente Original ( null ) > Fuente Derivada ( Talla )
+    public static final Font derivarFuente(Font fuente, float talla) {
+        return fuente == null || !(fuente instanceof Font) ? null
+                : fuente.deriveFont(talla);
+    }
+
+    // Fuente Original ( null ) > Fuente Derivada ( Estilo + Talla )
+    public static final Font derivarFuente(Font fuente, int estilo, float talla) {
+        return fuente == null || !(fuente instanceof Font) ? null
+                : fuente.deriveFont(estilo, talla);
+    }
+
+    // Fuente ( Fichero | Sistema | Lógica ) + Estilo + Talla > Fuente
+    public static final Font generarFuenteFichero(String fichero,
+            int estilo, float talla, String fuenteSistema, String fuenteLogica) {
+        // Fichero > Fuente
+        Font fuente = importarFuenteFichero(fichero);
+
+        // Comprobar Fuente
+        if (fuente != null) {
+            fuente = fuente.deriveFont(estilo, talla);
+        } else if (validarFuenteSistema(fuenteSistema)) {
+            fuente = new Font(fuenteSistema, estilo, (int) talla);
+        } else {
+            fuente = new Font(fuenteLogica, estilo, (int) talla);
+        }
+
+        // Devolver Fuente
+        return fuente;
+    }
+
+    // Fuente ( Fichero | Sistema | Lógica ) + Estilo + Talla > Fuente
+    public static final Font generarFuenteFichero(String fichero,
+            String fuenteSistema, String fuenteLogica) {
+        return generarFuenteFichero(fichero, DEF_FONT_STYLE, DEF_FONT_STYLE,
+                fuenteSistema, fuenteLogica);
+    }
+
+    // Fuente ( Recurso | Sistema | Lógica ) + Estilo + Talla > Fuente
+    public static final Font generarFuenteRecurso(String recurso,
+            int estilo, float talla, String fuenteSistema, String fuenteLogica) {
+        // Fichero > Fuente
+        Font fuente = importarFuenteRecurso(recurso);
+
+        // Comprobar Fuente
+        if (fuente != null) {
+            fuente = fuente.deriveFont(estilo, talla);
+        } else if (validarFuenteSistema(fuenteSistema)) {
+            fuente = new Font(fuenteSistema, estilo, (int) talla);
+        } else {
+            fuente = new Font(fuenteLogica, estilo, (int) talla);
+        }
+
+        // Devolver Fuente
+        return fuente;
+    }
+
+    // Fuente ( Recurso | Sistema | Lógica ) + Estilo + Talla > Fuente
+    public static final Font generarFuenteRecurso(String recurso,
+            String fuenteSistema, String fuenteLogica) {
+        return generarFuenteRecurso(recurso, DEF_FONT_STYLE, DEF_FONT_STYLE,
+                fuenteSistema, fuenteLogica);
     }
 
     // Campo de texto con DATO + ExpReg + Texto campo vacío
@@ -435,5 +515,28 @@ public final class UtilesSwing {
     public static final boolean validarCampoFecha(
             JTextField txfActual, String textoCampoVacio) {
         return validarCampo(txfActual, UtilesFecha.ER_FECHA, textoCampoVacio);
+    }
+
+    public static final boolean validarFuenteSistema(String fuente) {
+        return UtilesArrays.buscar(obtenerTipografiasSistema(), fuente) != -1;
+    }
+    
+    public static final Image importarImagenRecurso(String recurso) {
+        // Referencia Imagen
+        Image img;
+        
+        try {
+            // URL del Recurso
+            URL urlPpal = ClassLoader.getSystemResource(recurso);
+            
+            // Imagen de la URL
+            img = new ImageIcon(urlPpal).getImage();
+            
+        } catch (Exception e) {
+            img = new ImageIcon().getImage();
+        }
+        
+        // Devuelve la imagen
+        return img;
     }
 }
