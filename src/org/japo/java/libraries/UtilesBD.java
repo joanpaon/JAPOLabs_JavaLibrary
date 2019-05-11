@@ -37,17 +37,17 @@ public final class UtilesBD {
     private static final String DEF_PROT = "jdbc:mysql";
     private static final String DEF_HOST = "localhost";
     private static final String DEF_PORT = "3306";
-    private static final String DEF_DBAM = "agenda";
-    private static final String DEF_USER = "usuario";
-    private static final String DEF_PASS = "usuario";
+    private static final String DEF_DBAM = "test";
+    private static final String DEF_USER = "admin";
+    private static final String DEF_PASS = "12345";
 
     // Propiedades Conexión BBDD
-    private static final String PRP_PROT = "protocol";
-    private static final String PRP_HOST = "host";
-    private static final String PRP_PORT = "port";
-    private static final String PRP_DBAM = "db";
-    private static final String PRP_USER = "user";
-    private static final String PRP_PASS = "pass";
+    private static final String PRP_PROT = "db_prot";
+    private static final String PRP_HOST = "db_host";
+    private static final String PRP_PORT = "db_port";
+    private static final String PRP_DBNM = "db_name";
+    private static final String PRP_USER = "db_user";
+    private static final String PRP_PASS = "db_pass";
 
     // Formato Conexión
     private static final String FORMATO_CON = "%s://%s:%s/%s?user=%s&password=%s";
@@ -104,7 +104,7 @@ public final class UtilesBD {
                 prp.getProperty(PRP_PROT, DEF_PROT),
                 prp.getProperty(PRP_HOST, DEF_HOST),
                 prp.getProperty(PRP_PORT, DEF_PORT),
-                prp.getProperty(PRP_DBAM, DEF_DBAM),
+                prp.getProperty(PRP_DBNM, DEF_DBAM),
                 prp.getProperty(PRP_USER, DEF_USER),
                 prp.getProperty(PRP_PASS, DEF_PASS));
 
