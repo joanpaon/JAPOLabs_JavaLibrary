@@ -18,7 +18,9 @@ package org.japo.java.libraries;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
 
@@ -26,7 +28,7 @@ import java.util.Properties;
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class UtilesBD {
+public final class UtilesBD {
 
     // Propiedades BBDD
     private static final String FICHERO_PRP = "db.properties";
@@ -55,7 +57,7 @@ public class UtilesBD {
             FORMATO_CON, DEF_PROT, DEF_HOST, DEF_PORT, DEF_DBAM, DEF_USER, DEF_PASS);
 
     // Obtiene Conexión con BD - Predeterminada
-    public static final Connection obtenerConexion() throws SQLException {
+    public static final Connection conectar() throws SQLException {
         // Referencia a la Conexión
         Connection con;
 
@@ -64,13 +66,13 @@ public class UtilesBD {
             Properties prp = UtilesApp.importarPropiedades(FICHERO_PRP);
 
             // Obtener Conexión
-            con = obtenerConexion(prp);
+            con = UtilesBD.conectar(prp);
         } else {
             // Aviso 
             System.out.println("ERROR: Fichero Propiedades BD NO existe");
 
             // Obtener Conexión
-            con = obtenerConexion(DEF_CADENA_CON);
+            con = UtilesBD.conectar(DEF_CADENA_CON);
         }
 
         // Devolver Conexión
@@ -78,12 +80,12 @@ public class UtilesBD {
     }
 
     // Obtiene Conexión con BD - Cadena Conexión
-    public static final Connection obtenerConexion(String cadena) throws SQLException {
+    public static final Connection conectar(String cadena) throws SQLException {
         return DriverManager.getConnection(cadena);
     }
 
     // Obtiene Conexión con BD - Parámetros
-    public static final Connection obtenerConexion(
+    public static final Connection conectar(
             String prot, String host, String port, String db,
             String user, String pass) throws SQLException {
         // Definir cadena de conexión
@@ -91,11 +93,11 @@ public class UtilesBD {
                 FORMATO_CON, prot, host, port, db, user, pass);
 
         // Realizar la conexión
-        return obtenerConexion(cadenaConexion);
+        return UtilesBD.conectar(cadenaConexion);
     }
 
     // Obtiene Conexión con BD - Propiedades
-    public static final Connection obtenerConexion(Properties prp) throws SQLException {
+    public static final Connection conectar(Properties prp) throws SQLException {
         // Definir cadena de conexión
         String cadenaConexion = String.format(
                 FORMATO_CON,
@@ -111,7 +113,7 @@ public class UtilesBD {
     }
 
     // Obtiene Conexión con BD - Propiedades
-    public static final Connection obtenerConexion(File f) throws SQLException {
+    public static final Connection conectar(File f) throws SQLException {
         // Referencia a la Conexión
         Connection con = null;
 
@@ -120,7 +122,7 @@ public class UtilesBD {
             Properties prp = UtilesApp.importarPropiedades(f.getName());
 
             // Obtener Conexión
-            con = obtenerConexion(prp);
+            con = UtilesBD.conectar(prp);
         }
 
         // Realizar la conexión
@@ -140,5 +142,84 @@ public class UtilesBD {
 
         // Formatea la fecha
         return sdf.format(utilDate);
+    }
+
+    // ResultSet > Número Registros
+    public static final int obtenerNumeroRegistros(ResultSet rs) {
+        // Variable para almacenar el resultado
+        int numFilas;
+
+        try {
+            // Número de la fila a la que apunta el cursor
+            int filaAct = rs.getRow();
+
+            // Va al final del ResultSet
+            rs.last();
+
+            // Obtiene el número de filas
+            numFilas = rs.getRow();
+
+            if (filaAct != 0) {
+                // Coloca el cursor en la posición previa
+                rs.absolute(filaAct);
+            } else {
+                // Coloca el cursor al principio del ResultSet
+                rs.first();
+            }
+        } catch (SQLException e) {
+            numFilas = 0;
+        }
+
+        // Devuelve el número de filas calculadas
+        return numFilas;
+    }
+
+    // ResultSet > Número Registro Actual
+    public static final int obtenerPosicionActual(ResultSet rs) {
+        int filaActual;
+
+        try {
+            filaActual = rs.getRow();
+        } catch (SQLException | NullPointerException e) {
+            filaActual = 0;
+        }
+
+        return filaActual;
+    }
+
+    // Cierre JDBC Connection
+    public static final void cerrar(Connection conn) {
+        try {
+            if (conn != null) {
+                conn.close();
+                conn = null;
+            }
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+    }
+
+    // Cierre JDBC Statement
+    public static final void cerrar(Statement stmt) {
+        try {
+            if (stmt != null) {
+                stmt.close();
+                stmt = null;
+            }
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+    }
+
+    // Cierre JDBC ResultSet
+    public static final void cerrar(ResultSet rs) {
+        try {
+            if (rs != null) {
+                rs.close();
+                rs = null;
+            }
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
     }
 }
