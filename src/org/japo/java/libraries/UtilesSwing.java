@@ -32,6 +32,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -211,21 +213,37 @@ public final class UtilesSwing {
 
     // Image ( Tamaño INI ) > Image ( Tamaño FIN )
     public static Image escalarImagen(Image imgIni, int ancAct, int altAct) {
+        // Imagen Original
         Image imgFin;
 
+        // Reescalado
         try {
             imgFin = imgIni.getScaledInstance(ancAct, altAct, Image.SCALE_FAST);
         } catch (Exception e) {
             imgFin = imgIni;
         }
 
+        // Imagen Reescalada
         return imgFin;
+    }
+
+    // Escalar Image > Etiqueta
+    public static void escalarImagenEtiqueta(JLabel lblAct, Image imgIni, int ancAct, int altAct) {
+        try {
+            // Imagen Original >> Imagen Escalada 
+            Image imgFin = imgIni.getScaledInstance(ancAct, altAct, Image.SCALE_FAST);
+
+            // Icon > Etiqueta Imagen
+            lblAct.setIcon(new ImageIcon(imgFin));
+        } catch (Exception e) {
+            System.out.println("ERROR: No se ha podido adaptar imagen a etiqueta");
+        }
     }
 
     // Portapapeles >> Texto
     public static final String importarTextoPortapapeles() {
         // Referencia al texto del portapapeles
-        String result = "";
+        String texto = "";
 
         try {
             // Acceso al portapapeles
@@ -236,12 +254,13 @@ public final class UtilesSwing {
             Transferable contents = clipboard.getContents(null);
 
             // Extrae texto del portapapeles
-            result = (String) contents.getTransferData(DataFlavor.stringFlavor);
+            texto = (String) contents.getTransferData(DataFlavor.stringFlavor);
         } catch (HeadlessException | UnsupportedFlavorException | IOException e) {
             System.out.println("ERROR: Lectura del portapapeles");
         }
 
-        return result;
+        // Texto extraido
+        return texto;
     }
 
     // Texto >> Portapapeles
@@ -348,6 +367,7 @@ public final class UtilesSwing {
 
     // Importar Fuente TTF - Fichero
     public static final Font importarFuenteFichero(String fichero) {
+        // Referencia a la fuente
         Font f;
 
         // Cargar Fuente
@@ -357,11 +377,13 @@ public final class UtilesSwing {
             f = null;
         }
 
+        // Devuelve fuente
         return f;
     }
 
     // Importar Fuente TTF - Recurso
     public static final Font importarFuenteRecurso(String recurso) {
+        // Referencia a la fuente
         Font f;
 
         // Cargar Fuente
@@ -371,6 +393,7 @@ public final class UtilesSwing {
             f = null;
         }
 
+        // Devuelve fuente
         return f;
     }
 
@@ -518,13 +541,14 @@ public final class UtilesSwing {
         return validarCampo(txfActual, UtilesFecha.ER_FECHA, textoCampoVacio);
     }
 
-    // Validar Fuente en las Fuentes del Sistema
+    // Fuente ?: Lista Fuentes Instaladas
     public static final boolean validarFuenteSistema(String fuente) {
         return UtilesArrays.buscar(obtenerTipografiasSistema(), fuente) != -1;
     }
 
-    // Recurso ( String ) > Image
+    // Nombre Recurso > Image
     public static final Image importarImagenRecurso(String recurso) {
+        // Referencia Imagen
         Image img;
 
         try {
@@ -538,10 +562,11 @@ public final class UtilesSwing {
             img = new ImageIcon().getImage();
         }
 
+        // Devuelve la imagen
         return img;
     }
 
-    // Recurso ( String ) > Image ( Reescalada )
+    // Nombre Recurso + Ancho + Alto +  > Image ( Reescalada )
     public static final Image importarImagenRecurso(String recurso, int ancho, int alto) {
         // Referencia Imagen
         Image img;
@@ -561,5 +586,58 @@ public final class UtilesSwing {
 
         // Devuelve la imagen
         return img;
+    }
+
+    // ResultSet > Deslizador Navegación
+    public static final void actualizarDeslizadorNavegacion(JSlider sldActual,
+            JLabel lblActual, ResultSet rs) throws SQLException {
+        // Número Registros
+        int numeroTotalRegistros = UtilesBD.obtenerNumeroRegistros(rs);
+
+        // Numero Registro Actual
+        int numeroRegistroActual = UtilesBD.obtenerPosicionActual(rs);
+
+        // Guarda los gestores de eventos
+        ChangeListener[] lista = sldActual.getChangeListeners();
+
+        // Desconecta los ChangeListener definidos en tiempo de diseño
+        // Pero no los BeanBinding - Si se desconectan todos en enlazado
+        // NO FUNCIONA
+        for (ChangeListener cl : lista) {
+            // Obtiene la representación de texto del Listener
+            String texto = cl.toString();
+
+            // Ignora el listener si es BeanBinding
+            if (!texto.contains("org.jdesktop")) {
+                sldActual.removeChangeListener(cl);
+            }
+        }
+
+        // Actualiza Parámetros Deslizador
+        if (numeroTotalRegistros > 0) {
+            sldActual.setEnabled(true);
+            sldActual.setMinimum(1);                        // Change Listeners notificados
+            sldActual.setMaximum(numeroTotalRegistros);     // Change Listeners notificados
+            sldActual.setValue(numeroRegistroActual);       // Change Listeners notificados
+        } else {
+            sldActual.setEnabled(false);
+            sldActual.setMinimum(0);          // Change Listeners notificados
+            sldActual.setMaximum(0);          // Change Listeners notificados
+            sldActual.setValue(0);            // Change Listeners notificados
+        }
+
+        // Total de registros
+        lblActual.setText(numeroTotalRegistros + "");
+
+        // Conecta los ChangeListener desconectados
+        for (ChangeListener cl : lista) {
+            // Obtiene la representación de texto del Listener
+            String texto = cl.toString();
+
+            // Ignora el listener si es BeanBinding
+            if (!texto.contains("org.jdesktop")) {
+                sldActual.addChangeListener(cl);
+            }
+        }
     }
 }
