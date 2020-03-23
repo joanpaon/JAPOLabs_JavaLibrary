@@ -23,6 +23,9 @@ import java.util.StringJoiner;
  */
 public final class UtilesTXT {
 
+    // Longitud predeterminada Título formateado
+    public static final int LONGITUD = 21;
+
     // Archivo TXT > Array Lineas Texto
     public static final String[] importar(String fichero) throws Exception {
         return UtilesFicheros.leerArrayFichero(fichero);
@@ -44,6 +47,11 @@ public final class UtilesTXT {
 
         // Genera y devuelve título formateado
         return String.format("%s %s: ", titulo, puntos);
+    }
+
+    // Titulo > Titulo + SPC + puntos + ':' + SPC [longitud]
+    public static final String formatearTitulo(String titulo) {
+        return formatearTitulo(titulo, LONGITUD);
     }
 
     // String > Mayuscula Inicial (capitalize)
