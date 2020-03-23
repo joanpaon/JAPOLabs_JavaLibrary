@@ -27,6 +27,9 @@ import java.util.List;
  */
 public final class UtilesFicheros {
 
+    // Nombre predeterminado del Fichero
+    public static final String FICHERO = "datos.txt";
+
 //    // Linea texto > Fichero (Nuevo)
 //    public static final boolean escribirLineaFichero(String dato, String fichero) {
 //        // Semáforo
@@ -48,6 +51,11 @@ public final class UtilesFicheros {
         return escribirLineaFichero(dato, fichero, false);
     }
 
+    // Linea texto > Fichero (Nuevo)
+    public static final boolean escribirLineaFichero(String dato) {
+        return escribirLineaFichero(dato, FICHERO, false);
+    }
+
     // Linea texto + Semáforo > Fichero
     public static final boolean escribirLineaFichero(String dato, String fichero, boolean append) {
         // Semáforo
@@ -62,6 +70,11 @@ public final class UtilesFicheros {
 
         // Devolución Semáforo
         return procesoOK;
+    }
+
+    // Linea texto + Semáforo > Fichero
+    public static final boolean escribirLineaFichero(String dato, boolean append) {
+        return escribirLineaFichero(dato, FICHERO, append);
     }
 
     // Array Lineas de Texto > Fichero
@@ -82,6 +95,11 @@ public final class UtilesFicheros {
         return procesoOK;
     }
 
+    // Array Lineas de Texto > Fichero
+    public static final boolean escribirArrayFichero(String[] array) {
+        return escribirArrayFichero(array, FICHERO);
+    }
+
     // Fichero > Linea de texto
     public static final String leerLineaFichero(String fichero) {
         // Referencia Linea
@@ -98,6 +116,11 @@ public final class UtilesFicheros {
 
         // Devolución Linea
         return linea;
+    }
+
+    // Fichero > Linea de texto
+    public static final String leerLineaFichero() {
+        return leerLineaFichero(FICHERO);
     }
 
     // Fichero > Múltiples Lineas de texto
@@ -139,6 +162,11 @@ public final class UtilesFicheros {
         return texto;
     }
 
+    // Fichero > Múltiples Lineas de texto
+    public static final String leerTextoFichero() {
+        return leerTextoFichero(FICHERO);
+    }
+
     // Fichero > Array Lineas de texto
     public static final String[] leerArrayFichero(String fichero) {
         // Referencia Array
@@ -173,5 +201,10 @@ public final class UtilesFicheros {
 
         // Devolución Linea
         return array;
+    }
+
+    // Fichero > Array Lineas de texto
+    public static final String[] leerArrayFichero() {
+        return leerArrayFichero(FICHERO);
     }
 }

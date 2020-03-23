@@ -15,6 +15,8 @@
  */
 package org.japo.java.libraries;
 
+import java.util.StringJoiner;
+
 /**
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
@@ -25,4 +27,40 @@ public final class UtilesTXT {
     public static final String[] importar(String fichero) throws Exception {
         return UtilesFicheros.leerArrayFichero(fichero);
     }
+
+    // Titulo > Titulo + SPC + puntos + ':' + SPC [longitud]
+    public static final String formatearTitulo(String titulo, int longitud) {
+        // Titulo > Mayúscula Inicial
+        titulo = capitalizarTexto(titulo);
+
+        // Genera Linea Puntos
+        StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < longitud; i++) {
+            buffer.append('.');
+        }
+
+        // Recorta Linea Puntos
+        String puntos = buffer.toString().substring(titulo.length() + 2);
+
+        // Genera y devuelve título formateado
+        return String.format("%s %s: ", titulo, puntos);
+    }
+
+    // String > Mayuscula Inicial (capitalize)
+    public static final String capitalizarTexto(String titulo) {
+        return titulo.substring(0, 1).toUpperCase() + titulo.substring(1).toLowerCase();
+    }
+
+    // Array String > Enumeración String
+    public static final String enumerar(String[] items) {
+        // Buffer de Texto
+        StringJoiner buffer = new StringJoiner(",");
+
+        for (String item : items) {
+            buffer.add(item);
+        }
+
+        return buffer.toString();
+    }
+
 }

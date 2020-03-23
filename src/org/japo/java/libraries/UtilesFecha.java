@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2019 José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -252,27 +252,44 @@ public final class UtilesFecha {
         return any % 400 == 0 || any % 100 != 0 && any % 4 == 0;
     }
 
-    // Fecha ( Calendar ) > Fecha ( String )
-    public static final String convertir(Calendar fecha) {
-        return String.format("%02d/%02d/%d",
-                fecha.get(Calendar.DATE),
-                fecha.get(Calendar.MONTH),
-                fecha.get(Calendar.YEAR));
-    }
-
-    // Fecha ( Date ) > Fecha ( String )
-    public static final String convertir(Date fecha) {
-        // Objeto Calendar
-        Calendar c = Calendar.getInstance();
-
-        // Establece la fecha
-        c.setTime(fecha);
-
-        // Representación Fecha
+    // Calendar > Fecha dd/mm/aaaa ( String )
+    public static final String obtenerFecha(Calendar c) {
         return String.format("%02d/%02d/%d",
                 c.get(Calendar.DATE),
                 c.get(Calendar.MONTH),
                 c.get(Calendar.YEAR));
+    }
+
+    // Calendar > Hora hh:mm:ss ( String )
+    public static final String obtenerHora(Calendar c) {
+        return String.format("%02d:%02d:%2d",
+                c.get(Calendar.HOUR_OF_DAY),
+                c.get(Calendar.MINUTE),
+                c.get(Calendar.SECOND));
+    }
+
+    // Date > Fecha dd/mm/aaaa ( String )
+    public static final String obtenerFecha(Date d) {
+        // Objeto Calendar
+        Calendar c = Calendar.getInstance();
+
+        // Date > Calendar
+        c.setTime(d);
+
+        // Representación Fecha
+        return UtilesFecha.obtenerFecha(c);
+    }
+
+    // Date > Hora hh:mm:ss ( String )
+    public static final String obtenerHora(Date d) {
+        // Objeto Calendar
+        Calendar c = Calendar.getInstance();
+
+        // Date > Calendar
+        c.setTime(d);
+
+        // Representación Fecha
+        return UtilesFecha.obtenerHora(c);
     }
 
     // Fecha ( String ) > Fecha ( Date )

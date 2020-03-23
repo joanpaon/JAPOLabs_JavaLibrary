@@ -35,10 +35,15 @@ public final class UtilesEntrada {
     public static final String FORMATO_HORA01 = "hh:mm:ss";
 
     // Scanner + Codificación Windows
-    public static final Scanner SCN = new Scanner(System.in, "ISO-8859-1");
+    public static final Scanner SCN
+            = new Scanner(System.in, "Windows-1252")
+                    .useLocale(Locale.ENGLISH).useDelimiter("\\s+");
 
     // Locale Spanish
     public static final Locale LCL = new Locale("es", "ES");
+
+    // Mensaje de Error por Defecto
+    public static final String MSG_ERR = "ERROR: Entrada incorrecta";
 
     // Consola >> Entero
     public static final int leerEntero(String msgUsr, String msgErr) {
@@ -64,6 +69,11 @@ public final class UtilesEntrada {
 
         // Devolver dato
         return dato;
+    }
+
+    // Consola >> Entero
+    public static final int leerEntero(String msgUsr) {
+        return leerEntero(msgUsr, MSG_ERR);
     }
 
     // Consola >> Entero [min .. max]
@@ -92,6 +102,11 @@ public final class UtilesEntrada {
         return dato;
     }
 
+    // Consola >> Entero [min .. max]
+    public static final int leerEntero(String msgUsr, int min, int max) {
+        return leerEntero(msgUsr, MSG_ERR, min, max);
+    }
+
     // Consola >> Entero [Lista posibles Valores]
     public static final int leerEntero(String msgUsr, String msgErr, int lista[]) {
         // Numero a devolver
@@ -116,6 +131,11 @@ public final class UtilesEntrada {
 
         // Devolver número
         return dato;
+    }
+
+    // Consola >> Entero [Lista posibles Valores]
+    public static final int leerEntero(String msgUsr, int lista[]) {
+        return leerEntero(msgUsr, MSG_ERR, lista);
     }
 
     // Consola >> Real
@@ -144,6 +164,11 @@ public final class UtilesEntrada {
         return dato;
     }
 
+    // Consola >> Real
+    public static final double leerReal(String msgUsr) {
+        return leerReal(msgUsr, MSG_ERR);
+    }
+
     // Consola >> Real [min .. max]
     public static final double leerReal(String msgUsr, String msgErr, double min, double max) {
         // Numero a devolver
@@ -168,6 +193,11 @@ public final class UtilesEntrada {
 
         // Devolver número
         return dato;
+    }
+
+    // Consola >> Real [min .. max]
+    public static final double leerReal(String msgUsr, double min, double max) {
+        return leerReal(msgUsr, MSG_ERR, min, max);
     }
 
     // Consola >> Real [Lista posibles Valores]
@@ -196,6 +226,11 @@ public final class UtilesEntrada {
         return dato;
     }
 
+    // Consola >> Real [Lista posibles Valores]
+    public static final double leerReal(String msgUsr, double lista[]) {
+        return leerReal(msgUsr, MSG_ERR, lista);
+    }
+
     // Consola >> Carácter
     public static final char leerCaracter(String msgUsr, String msgErr) {
         // Dato a introducir
@@ -218,6 +253,11 @@ public final class UtilesEntrada {
 
         // Devolver dato
         return dato;
+    }
+
+    // Consola >> Carácter
+    public static final char leerCaracter(String msgUsr) {
+        return leerCaracter(msgUsr, MSG_ERR);
     }
 
     // Opciones + Consola > Opcion
@@ -261,6 +301,11 @@ public final class UtilesEntrada {
 
         // Devolver número
         return dato;
+    }
+
+    // Consola >> Carácter [min .. max]
+    public static final char leerCaracter(String msgUsr, char min, char max) {
+        return leerCaracter(msgUsr, MSG_ERR, min, max);
     }
 
     // Consola >> Texto
@@ -310,9 +355,19 @@ public final class UtilesEntrada {
         return leerDatoTemporal(FORMATO_FECHA01, msgUsr, msgErr);
     }
 
+    // Consola >> Fecha
+    public static final Calendar leerFecha(String msgUsr) {
+        return leerFecha(msgUsr, MSG_ERR);
+    }
+
     // Consola >> Hora
     public static final Calendar leerHora(String msgUsr, String msgErr) {
         return leerDatoTemporal(FORMATO_HORA01, msgUsr, msgErr);
+    }
+
+    // Consola >> Hora
+    public static final Calendar leerHora(String msgUsr) {
+        return leerHora(msgUsr, MSG_ERR);
     }
 
     // Pausa + MSG >> INTRO
