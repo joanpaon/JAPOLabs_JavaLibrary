@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2019 José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,7 +66,10 @@ public final class UtilesValidacion {
 
     // Texto + [Lista]
     public static final boolean validar(String dato, String[] lista) {
+        // Ordena Lista
         Arrays.sort(lista);
+
+        // Devuelve el resultado de la busqueda
         return Arrays.binarySearch(lista, dato) >= 0;
     }
 }

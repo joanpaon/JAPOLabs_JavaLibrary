@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2019 José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,42 +15,14 @@
  */
 package org.japo.java.libraries;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class UtilesTXT {
+public final class UtilesTXT {
 
-    // Archivo TXT > Lista Lineas
+    // Archivo TXT > Array Lineas Texto
     public static final String[] importar(String fichero) throws Exception {
-        // Acumulador Lineas
-        List<String> listaLineas = new ArrayList<>();
-
-        // Importar Items
-        try (
-                FileReader fr = new FileReader(fichero);
-                BufferedReader br = new BufferedReader(fr)) {
-            // Bucle Recorrido Lineas Fichero
-            boolean finFicheroOK = false;
-            do {
-                // Fichero TXT > Linea Items (1ª Linea)
-                String linea = br.readLine();
-
-                // Análisis Linea
-                if (linea == null) {
-                    finFicheroOK = true;
-                } else {
-                    listaLineas.add(linea);
-                }
-            } while (!finFicheroOK);
-        }
-
-        // Devolver Items
-        return listaLineas.toArray(new String[listaLineas.size()]);
+        return UtilesFicheros.leerArrayFichero(fichero);
     }
 }

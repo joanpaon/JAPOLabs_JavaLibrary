@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2019 José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@ import java.util.Scanner;
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class UtilesEntrada {
+public final class UtilesEntrada {
 
     // Formatos Fecha
     public static final String FORMATO_FECHA01 = "dd/MM/yyyy";
@@ -220,32 +220,21 @@ public class UtilesEntrada {
         return dato;
     }
 
-    // Consola >> Carácter [Lista posibles Opciones]
+    // Opciones + Consola > Opcion
     public static final char leerCaracter(String msgUsr, String msgErr, String opciones) {
-        // Dato a introducir
-        char dato = 0;
-
-        // Proceso de lectura
-        boolean lecturaOK = false;
+        char opcion;
+        boolean opcionOK = false;
         do {
-            try {
-                // Entrada dato
-                System.out.print(msgUsr);
-                dato = SCN.nextLine().charAt(0);
-
-                // Analisis Dato
-                if (opciones.contains(dato + "")) {
-                    lecturaOK = true;
-                } else {
-                    System.out.println(msgErr);
-                }
-            } catch (Exception e) {
+            opcion = leerCaracter(msgUsr, "");
+            if (opciones.contains(opcion + "")) {
+                opcionOK = true;
+            } else {
+                System.out.println("---");
                 System.out.println(msgErr);
+                System.out.println("---");
             }
-        } while (!lecturaOK);
-
-        // Devolver dato
-        return dato;
+        } while (!opcionOK);
+        return opcion;
     }
 
     // Consola >> Carácter [min .. max]
@@ -324,5 +313,41 @@ public class UtilesEntrada {
     // Consola >> Hora
     public static final Calendar leerHora(String msgUsr, String msgErr) {
         return leerDatoTemporal(FORMATO_HORA01, msgUsr, msgErr);
+    }
+
+    // Pausa + MSG >> INTRO
+    public static final void hacerPausa(String msgUsr) {
+        System.out.println("---");
+        System.out.println(msgUsr);
+        hacerPausa();
+    }
+
+    // Pausa >> INTRO
+    public static final void hacerPausa() {
+        System.out.println("---");
+        System.out.print("Pulse INTRO para continuar ...");
+        SCN.nextLine();
+        System.out.println("---");
+    }
+
+    // Confirmación S/N + Defecto > Boolean
+    public static final boolean confirmarProceso(String msgUsr, boolean defectoOK) {
+        // Semáforo
+        boolean confirmacionOK = defectoOK;
+
+        // Consola > Caracter
+        String entrada = leerTexto(msgUsr);
+
+        // Analisis Entrada
+        if (entrada.length() > 0) {
+            // Entrada > Caracter 1
+            char c = entrada.charAt(0);
+
+            // Caracter [Ss | Nn] > Boolean
+            confirmacionOK = "Ss".contains(c + "");
+        }
+
+        // Devolución Confirmación
+        return confirmacionOK;
     }
 }
