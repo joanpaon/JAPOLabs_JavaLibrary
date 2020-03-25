@@ -59,16 +59,22 @@ public final class UtilesTXT {
         return titulo.substring(0, 1).toUpperCase() + titulo.substring(1).toLowerCase();
     }
 
-    // Array String > Enumeración String
-    public static final String enumerar(String[] items) {
+    // Array String + Separador > Enumeración String
+    public static final String enumerar(String[] items, String separador) {
         // Buffer de Texto
-        StringJoiner buffer = new StringJoiner(",");
+        StringJoiner buffer = new StringJoiner(separador);
 
+        // Acumulación de ítems
         for (String item : items) {
             buffer.add(item);
         }
 
+        // Devolución enumeración
         return buffer.toString();
     }
 
+    // Array String > Enumeración String
+    public static final String enumerar(String[] items) {
+        return enumerar(items, UtilesCSV.SEPARADOR_ESCRITURA);
+    }
 }
