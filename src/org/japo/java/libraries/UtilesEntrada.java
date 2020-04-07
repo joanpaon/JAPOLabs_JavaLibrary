@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2019 José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -71,10 +71,10 @@ public class UtilesEntrada {
         // Numero a devolver
         int dato;
 
-        // Semaforo validacion
+        // Semáforo validación
         boolean rangoOK;
 
-        // Bucle Validacion
+        // Bucle Validación
         do {
             // Introducir Entero
             dato = leerEntero(msgUsr, msgErr);
@@ -82,7 +82,7 @@ public class UtilesEntrada {
             // Validar Entero
             rangoOK = dato >= min && dato <= max;
 
-            // Mensaje de error
+            // Fuera de Rango > Mensaje de error
             if (!rangoOK) {
                 System.out.println(msgErr);
             }
@@ -94,13 +94,13 @@ public class UtilesEntrada {
 
     // Consola >> Entero [Lista posibles Valores]
     public static final int leerEntero(String msgUsr, String msgErr, int lista[]) {
-        // Numero a devolver
+        // Número a devolver
         int dato;
 
-        // Semaforo validacion
+        // Semáforo validación
         boolean datoOK;
 
-        // Bucle Validacion
+        // Bucle validación
         do {
             // Introducir Entero
             dato = UtilesEntrada.leerEntero(msgUsr, msgErr);
@@ -108,7 +108,7 @@ public class UtilesEntrada {
             // Validar Entero
             datoOK = UtilesArrays.buscar(lista, dato) > -1;
 
-            // Mensaje de error
+            // Entero no válido > Mensaje de error
             if (!datoOK) {
                 System.out.println(msgErr);
             }
@@ -149,10 +149,10 @@ public class UtilesEntrada {
         // Numero a devolver
         double dato;
 
-        // Semaforo validacion
+        // Semáforo Validación
         boolean rangoOK;
 
-        // Bucle Validacion
+        // Bucle Validación
         do {
             // Introducir Entero
             dato = leerReal(msgUsr, msgErr);
@@ -175,10 +175,10 @@ public class UtilesEntrada {
         // Numero a devolver
         double dato;
 
-        // Semaforo validacion
+        // Semáforo Validación
         boolean datoOK;
 
-        // Bucle Validacion
+        // Bucle Validación
         do {
             // Introducir Entero
             dato = UtilesEntrada.leerEntero(msgUsr, msgErr);
@@ -253,10 +253,10 @@ public class UtilesEntrada {
         // Dato a introducir
         char dato;
 
-        // Semaforo validacion
+        // Semáforo Validación
         boolean rangoOK;
 
-        // Bucle Validacion
+        // Bucle Validación
         do {
             // Introducir Entero
             dato = leerCaracter(msgUsr, msgErr);
@@ -282,7 +282,7 @@ public class UtilesEntrada {
 
     // Consola >> Calendar
     public static final Calendar leerDatoTemporal(
-            String patron, Locale locale, String msgUsr, String msgErr) {
+            String patron, Locale locale, String msgUsr, String msgErr, boolean modoEstrictoOK) {
         // Formateador
         SimpleDateFormat sdf = new SimpleDateFormat(patron, locale);
 
@@ -293,6 +293,11 @@ public class UtilesEntrada {
         try {
             // Consola >> Dato (Texto)
             String texto = leerTexto(msgUsr);
+
+            // Modo Estricto
+            if (modoEstrictoOK && !UtilesFecha.validarFecha(texto)) {
+                throw new ParseException(msgErr, 0);
+            }
 
             // Texto >> Date
             Date date = sdf.parse(texto);
@@ -312,17 +317,18 @@ public class UtilesEntrada {
 
     // Consola >> Calendar (Locale ESP)
     public static final Calendar leerDatoTemporal(
-            String patron, String msgUsr, String msgErr) {
-        return leerDatoTemporal(patron, LCL, msgUsr, msgErr);
+            String patron, String msgUsr, String msgErr, boolean modoEstrictoOK) {
+        // Referencia Calendar
+        return leerDatoTemporal(patron, LCL, msgUsr, msgErr, modoEstrictoOK);
     }
 
     // Consola >> Fecha
     public static final Calendar leerFecha(String msgUsr, String msgErr) {
-        return leerDatoTemporal(FORMATO_FECHA01, msgUsr, msgErr);
+        return leerDatoTemporal(FORMATO_FECHA01, msgUsr, msgErr, true);
     }
 
     // Consola >> Hora
     public static final Calendar leerHora(String msgUsr, String msgErr) {
-        return leerDatoTemporal(FORMATO_HORA01, msgUsr, msgErr);
+        return leerDatoTemporal(FORMATO_HORA01, msgUsr, msgErr, true);
     }
 }
