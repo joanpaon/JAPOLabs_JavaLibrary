@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2019 José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,42 +15,66 @@
  */
 package org.japo.java.libraries;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.StringJoiner;
 
 /**
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class UtilesTXT {
+public final class UtilesTXT {
 
-    // Archivo TXT > Lista Lineas
+    // Longitud predeterminada Título formateado
+    public static final int LONGITUD = 21;
+
+    // Archivo TXT > Array Lineas Texto
     public static final String[] importar(String fichero) throws Exception {
-        // Acumulador Lineas
-        List<String> listaLineas = new ArrayList<>();
+        return UtilesFicheros.leerArrayFichero(fichero);
+    }
 
-        // Importar Items
-        try (
-                FileReader fr = new FileReader(fichero);
-                BufferedReader br = new BufferedReader(fr)) {
-            // Bucle Recorrido Lineas Fichero
-            boolean finFicheroOK = false;
-            do {
-                // Fichero TXT > Linea Items (1ª Linea)
-                String linea = br.readLine();
+    // Titulo > Titulo + SPC + puntos + ':' + SPC [longitud]
+    public static final String formatearTitulo(String titulo, int longitud) {
+        // Titulo > Mayúscula Inicial
+        titulo = capitalizarTexto(titulo);
 
-                // Análisis Linea
-                if (linea == null) {
-                    finFicheroOK = true;
-                } else {
-                    listaLineas.add(linea);
-                }
-            } while (!finFicheroOK);
+        // Genera Linea Puntos
+        StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < longitud; i++) {
+            buffer.append('.');
         }
 
-        // Devolver Items
-        return listaLineas.toArray(new String[listaLineas.size()]);
+        // Recorta Linea Puntos
+        String puntos = buffer.toString().substring(titulo.length() + 2);
+
+        // Genera y devuelve título formateado
+        return String.format("%s %s: ", titulo, puntos);
+    }
+
+    // Titulo > Titulo + SPC + puntos + ':' + SPC [longitud]
+    public static final String formatearTitulo(String titulo) {
+        return formatearTitulo(titulo, LONGITUD);
+    }
+
+    // String > Mayuscula Inicial (capitalize)
+    public static final String capitalizarTexto(String titulo) {
+        return titulo.substring(0, 1).toUpperCase() + titulo.substring(1).toLowerCase();
+    }
+
+    // Array String + Separador > Enumeración String
+    public static final String enumerar(String[] items, String separador) {
+        // Buffer de Texto
+        StringJoiner buffer = new StringJoiner(separador);
+
+        // Acumulación de ítems
+        for (String item : items) {
+            buffer.add(item);
+        }
+
+        // Devolución enumeración
+        return buffer.toString();
+    }
+
+    // Array String > Enumeración String
+    public static final String enumerar(String[] items) {
+        return enumerar(items, UtilesCSV.SEPARADOR_ESCRITURA);
     }
 }

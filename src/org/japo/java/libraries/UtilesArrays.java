@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2019 José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -258,7 +258,7 @@ public final class UtilesArrays {
             lista[posRnd] = lista[i];
             lista[i] = aux;
         }
-        
+
         return lista;
     }
 
@@ -271,7 +271,7 @@ public final class UtilesArrays {
             lista[posRnd] = lista[i];
             lista[i] = aux;
         }
-        
+
         return lista;
     }
 
@@ -284,7 +284,7 @@ public final class UtilesArrays {
             lista[posRnd] = lista[i];
             lista[i] = aux;
         }
-        
+
         return lista;
     }
 
@@ -297,7 +297,7 @@ public final class UtilesArrays {
             lista[posRnd] = lista[i];
             lista[i] = aux;
         }
-        
+
         return lista;
     }
 
@@ -310,7 +310,7 @@ public final class UtilesArrays {
             lista[posRnd] = lista[i];
             lista[i] = aux;
         }
-        
+
         return lista;
     }
 
@@ -322,7 +322,7 @@ public final class UtilesArrays {
         // Recorrer a partir del segundo
         for (int actual = 1; actual < lista.length; actual++) {
             posicion = lista[actual] > lista[posicion] ? actual : posicion;
-}
+        }
 
         // Devolver posicion
         return posicion;
@@ -341,7 +341,8 @@ public final class UtilesArrays {
         // Devolver posicion
         return posicion;
     }
-    
+
+    // clave + lista > Número ocurrencias
     public static final int contarOcurrencias(int[] lista, int clave) {
         // Contador ocurrencias
         int contador = 0;

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2019 José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,14 +24,14 @@ import java.io.PrintWriter;
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class UtilesCSV {
+public final class UtilesCSV {
 
     // Separadores
     public static final String SEPARADOR_LECTURA = "\\s*,\\s*";
     public static final String SEPARADOR_ESCRITURA = ", ";
 
-    // Archivo CSV > Lista Items
-    public static final String[] importar(String fichero)
+    // Primera Linea Archivo CSV > Lista Items
+    public static final String[] importarLinea(String fichero)
             throws Exception {
         // Lista Items (Vacio)
         String[] items;
@@ -51,8 +51,8 @@ public class UtilesCSV {
         return items;
     }
 
-    // Lista Items > Archivo CSV
-    public static final void exportar(String[] items, String fichero)
+    // Lista Items > Primera Linea Archivo CSV
+    public static final void exportarLinea(String[] items, String fichero)
             throws Exception {
         // Lectura de un fichero de texto
         try (

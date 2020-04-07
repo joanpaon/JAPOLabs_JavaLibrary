@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2019 José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import java.util.Properties;
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class UtilesApp {
+public final class UtilesApp {
 
     // Valores por Defecto
     public static final String DEF_PAQUETE_PRP = "properties";
@@ -41,12 +41,12 @@ public class UtilesApp {
     public static final String DEF_RECURSO_PRP = "config/app.properties";
     public static final String DEF_PUERTO_BLOQUEO = "54321";
 
-    // Fichero (Por defecto) > Propiedades    
+    // Fichero (Por defecto) > Propiedades
     public static final Properties importarPropiedades() {
         return importarPropiedades(DEF_FICHERO_PRP);
     }
 
-    // Fichero XML (Por defecto) > Propiedades    
+    // Fichero XML (Por defecto) > Propiedades
     public static final Properties importarPropiedadesXML() {
         return importarPropiedadesXML(DEF_FICHERO_XML);
     }
@@ -56,7 +56,7 @@ public class UtilesApp {
         // Objeto de Propiedades Vacio
         Properties prp = new Properties();
 
-        // Cargar Fichero de Propiedades 
+        // Cargar Fichero de Propiedades
         try (FileReader fr = new FileReader(fichero)) {
             prp.load(fr);
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class UtilesApp {
         // Objeto de Propiedades Vacio
         Properties prp = new Properties();
 
-        // Cargar Fichero de Propiedades 
+        // Cargar Fichero de Propiedades
         try (InputStream is = ClassLoader.getSystemResourceAsStream(recurso)) {
             prp.load(is);
         } catch (Exception e) {
@@ -93,7 +93,7 @@ public class UtilesApp {
         // Objeto de Propiedades Vacio
         Properties prp = new Properties();
 
-        // Cargar Fichero de Propiedades 
+        // Cargar Fichero de Propiedades
         try (FileInputStream fisXml = new FileInputStream(fichero)) {
             // Carga las propiedades
             prp.loadFromXML(fisXml);
@@ -223,7 +223,7 @@ public class UtilesApp {
             throws Exception {
 
         // Referencia Objeto
-        Object objeto = null;
+        Object objeto;
 
         try (
                 FileInputStream fis = new FileInputStream(archivo);
@@ -253,7 +253,7 @@ public class UtilesApp {
             throws Exception {
 
         // Referencia Objeto
-        Object objeto = null;
+        Object objeto;
 
         try (
                 FileInputStream fis = new FileInputStream(archivo);
