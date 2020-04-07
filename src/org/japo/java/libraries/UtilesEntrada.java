@@ -323,27 +323,34 @@ public final class UtilesEntrada {
         // Referencia Calendar
         Calendar calendar = null;
 
-        // Intro + Parse
-        try {
-            // Consola >> Dato (Texto)
-            String texto = leerTexto(msgUsr);
+        // Bucle Validación
+        boolean datoOK = false;
+        do {
+            // Intro + Parse
+            try {
+                // Consola >> Dato (Texto)
+                String texto = leerTexto(msgUsr);
 
-            // Modo Estricto
-            if (!UtilesFecha.validarFecha(texto) && !UtilesFecha.validarHora(texto)) {
-                throw new ParseException(msgErr, 0);
+                // Modo Estricto
+                if (!UtilesFecha.validarFecha(texto) && !UtilesFecha.validarHora(texto)) {
+                    throw new ParseException(msgErr, 0);
+                }
+
+                // Texto >> Date
+                Date date = sdf.parse(texto);
+
+                // Instancia Objeto Calendar
+                calendar = Calendar.getInstance();
+
+                // Date >> Calendar
+                calendar.setTime(date);
+
+                // Actualización Semáforo
+                datoOK = true;
+            } catch (ParseException e) {
+                System.out.println(msgErr);
             }
-
-            // Texto >> Date
-            Date date = sdf.parse(texto);
-
-            // Instancia Objeto Calendar
-            calendar = Calendar.getInstance();
-
-            // Date >> Calendar
-            calendar.setTime(date);
-        } catch (ParseException e) {
-            System.out.println(msgErr);
-        }
+        } while (!datoOK);
 
         // Devuelve Calendar
         return calendar;

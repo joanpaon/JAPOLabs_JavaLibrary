@@ -256,6 +256,13 @@ public final class UtilesFecha {
         return UtilesValidacion.validar(fecha, UtilesFecha.ER_FECHA);
     }
 
+    // Validación Fecha - Date [min..max]
+    public static final boolean validarFecha(Date d, Date min, Date max) {
+        return true
+                && d != null && min != null & max != null
+                && d.getTime() >= min.getTime() && d.getTime() <= max.getTime();
+    }
+
     // Comprobar si el año es bisiesto
     public static final boolean validarBisiesto(int any) {
         return any % 400 == 0 || any % 100 != 0 && any % 4 == 0;
@@ -263,18 +270,18 @@ public final class UtilesFecha {
 
     // Calendar > Fecha dd/mm/aaaa ( String )
     public static final String obtenerFecha(Calendar c) {
-        return String.format("%02d/%02d/%d",
+        return c != null ? String.format("%02d/%02d/%d",
                 c.get(Calendar.DATE),
                 c.get(Calendar.MONTH),
-                c.get(Calendar.YEAR));
+                c.get(Calendar.YEAR)) : "dd/mm/aaaa";
     }
 
     // Calendar > Hora hh:mm:ss ( String )
     public static final String obtenerHora(Calendar c) {
-        return String.format("%02d:%02d:%2d",
+        return c != null ? String.format("%02d:%02d:%2d",
                 c.get(Calendar.HOUR_OF_DAY),
                 c.get(Calendar.MINUTE),
-                c.get(Calendar.SECOND));
+                c.get(Calendar.SECOND)) : "hh:mm:ss";
     }
 
     // Date > Fecha dd/mm/aaaa ( String )
@@ -315,6 +322,11 @@ public final class UtilesFecha {
         Locale lcl = new Locale("ES", "es");
 
         try {
+            // Comprobación null
+            if (fecha == null || formato == null) {
+                throw new ParseException("Parámetros null", 0);
+            }
+
             // Formateador de Fecha
             SimpleDateFormat sdf = new SimpleDateFormat(formato, lcl);
 
@@ -355,7 +367,7 @@ public final class UtilesFecha {
                 c.get(Calendar.YEAR));
     }
 
-    static boolean validarHora(String hora) {
+    public static final boolean validarHora(String hora) {
         return UtilesValidacion.validar(hora, UtilesFecha.ER_HORA);
     }
 }
