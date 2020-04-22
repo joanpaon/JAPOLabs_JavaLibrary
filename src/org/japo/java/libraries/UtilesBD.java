@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2019 José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ import java.util.Properties;
 public final class UtilesBD {
 
     // Propiedades BBDD
-    private static final String FICHERO_PRP = "db.properties";
+    private static final String FICHERO_PRP = "app.properties";
 
     // Valores Predeterminados Conexión BBDD
     private static final String DEF_PROT = "jdbc:mysql";
@@ -56,6 +56,22 @@ public final class UtilesBD {
     private static final String DEF_CADENA_CON = String.format(
             FORMATO_CON, DEF_PROT, DEF_HOST, DEF_PORT, DEF_DBAM, DEF_USER, DEF_PASS);
 
+    // Obtiene Conexión con BD - Properties
+    public static final Connection conectar(Properties prp) throws SQLException {
+        // Definir cadena de conexión
+        String cadenaConexion = String.format(
+                FORMATO_CON,
+                prp.getProperty(PRP_PROT, DEF_PROT),
+                prp.getProperty(PRP_HOST, DEF_HOST),
+                prp.getProperty(PRP_PORT, DEF_PORT),
+                prp.getProperty(PRP_DBNM, DEF_DBAM),
+                prp.getProperty(PRP_USER, DEF_USER),
+                prp.getProperty(PRP_PASS, DEF_PASS));
+
+        // Realizar la conexión
+        return DriverManager.getConnection(cadenaConexion);
+    }
+
     // Obtiene Conexión con BD - Predeterminada
     public static final Connection conectar() throws SQLException {
         // Referencia a la Conexión
@@ -66,26 +82,26 @@ public final class UtilesBD {
             Properties prp = UtilesApp.importarPropiedades(FICHERO_PRP);
 
             // Obtener Conexión
-            con = UtilesBD.abrir(prp);
+            con = conectar(prp);
         } else {
-            // Aviso 
+            // Aviso
             System.out.println("ERROR: Fichero Propiedades BD NO existe");
 
             // Obtener Conexión
-            con = UtilesBD.abrir(DEF_CADENA_CON);
+            con = UtilesBD.conectar(DEF_CADENA_CON);
         }
 
         // Devolver Conexión
         return con;
     }
 
-    // Obtiene Conexión con BD - Cadena Conexión
-    public static final Connection abrir(String cadena) throws SQLException {
+    // Obtiene Conexión con BD - Predeterminada
+    public static final Connection conectar(String cadena) throws SQLException {
         return DriverManager.getConnection(cadena);
     }
 
     // Obtiene Conexión con BD - Parámetros
-    public static final Connection abrir(
+    public static final Connection conectar(
             String prot, String host, String port, String db,
             String user, String pass) throws SQLException {
         // Definir cadena de conexión
@@ -93,9 +109,24 @@ public final class UtilesBD {
                 FORMATO_CON, prot, host, port, db, user, pass);
 
         // Realizar la conexión
-        return UtilesBD.abrir(cadenaConexion);
+        return UtilesBD.conectar(cadenaConexion);
     }
 
+    // Obtiene Conexión con BD - Cadena Conexión
+//    public static final Connection abrir(String cadena) throws SQLException {
+//        return DriverManager.getConnection(cadena);
+//    }
+    // Obtiene Conexión con BD - Parámetros
+//    public static final Connection abrir(
+//            String prot, String host, String port, String db,
+//            String user, String pass) throws SQLException {
+//        // Definir cadena de conexión
+//        String cadenaConexion = String.format(
+//                FORMATO_CON, prot, host, port, db, user, pass);
+//
+//        // Realizar la conexión
+//        return UtilesBD.conectar(cadenaConexion);
+//    }
     // Obtiene Conexión con BD - Propiedades
     public static final Connection abrir(Properties prp) throws SQLException {
         // Definir cadena de conexión
@@ -132,18 +163,18 @@ public final class UtilesBD {
     // Conexión + Access + Concurrency > Statement
     public static final Statement vincular(Connection conn, int acceso, int concurrencia) throws SQLException {
         // ---- CAMBIOS DE DATOS ----
-        // ResultSet.TYPE_FORWARD_ONLY (*) - Indica que el objeto ResultSet se 
+        // ResultSet.TYPE_FORWARD_ONLY (*) - Indica que el objeto ResultSet se
         //      puede recorrer unicamente hacia adelante.
-        // ResultSet.TYPE_SCROLL_INSENSITIVE - Indica que el objeto ResultSet se 
-        //      puede recorrer, pero en general no es sensible a los cambios en 
+        // ResultSet.TYPE_SCROLL_INSENSITIVE - Indica que el objeto ResultSet se
+        //      puede recorrer, pero en general no es sensible a los cambios en
         //      los datos que subyacen en él.
-        // ResultSet.TYPE_SCROLL_SENSITIVE - Indica que el objeto ResultSet se 
+        // ResultSet.TYPE_SCROLL_SENSITIVE - Indica que el objeto ResultSet se
         //      puede  recorrer, y además, los cambios en él repercuten
         //      en la base de datos subyacente.
         // ---- MODOS DE CONCURRENCIA ----
-        // ResultSet.CONCUR_READ_ONLY (*) - Indica que en el modo de concurrencia 
+        // ResultSet.CONCUR_READ_ONLY (*) - Indica que en el modo de concurrencia
         //      para el objeto ResultSet éste no puede ser actualizado.
-        // ResultSet.CONCUR_UPDATABLE - Indica que en el modo de concurrencia 
+        // ResultSet.CONCUR_UPDATABLE - Indica que en el modo de concurrencia
         //      para el objeto ResultSet éste podria ser actualizado.
         //
         Statement stmt = conn.createStatement(acceso, concurrencia);
@@ -155,18 +186,18 @@ public final class UtilesBD {
     // Conexión + Access + Concurrency > Statement
     public static final Statement vincular(Connection conn, Properties prp) throws SQLException {
         // ---- CAMBIOS DE DATOS ----
-        // ResultSet.TYPE_FORWARD_ONLY (*) - Indica que el objeto ResultSet se 
+        // ResultSet.TYPE_FORWARD_ONLY (*) - Indica que el objeto ResultSet se
         //      puede recorrer unicamente hacia adelante.
-        // ResultSet.TYPE_SCROLL_INSENSITIVE - Indica que el objeto ResultSet se 
-        //      puede recorrer, pero en general no es sensible a los cambios en 
+        // ResultSet.TYPE_SCROLL_INSENSITIVE - Indica que el objeto ResultSet se
+        //      puede recorrer, pero en general no es sensible a los cambios en
         //      los datos que subyacen en él.
-        // ResultSet.TYPE_SCROLL_SENSITIVE - Indica que el objeto ResultSet se 
+        // ResultSet.TYPE_SCROLL_SENSITIVE - Indica que el objeto ResultSet se
         //      puede  recorrer, y además, los cambios en él repercuten
         //      en la base de datos subyacente.
         // ---- MODOS DE CONCURRENCIA ----
-        // ResultSet.CONCUR_READ_ONLY (*) - Indica que en el modo de concurrencia 
+        // ResultSet.CONCUR_READ_ONLY (*) - Indica que en el modo de concurrencia
         //      para el objeto ResultSet éste no puede ser actualizado.
-        // ResultSet.CONCUR_UPDATABLE - Indica que en el modo de concurrencia 
+        // ResultSet.CONCUR_UPDATABLE - Indica que en el modo de concurrencia
         //      para el objeto ResultSet éste podria ser actualizado.
         //
         // Tipo de Acceso
@@ -192,7 +223,7 @@ public final class UtilesBD {
 
     // Statement + SQL > ResultSet
     public static final ResultSet obtener(Statement stmt, String sql) throws SQLException {
-        // Statement + Select SQL 
+        // Statement + Select SQL
         ResultSet rs = stmt.executeQuery(sql);
 
         // > ResultSet
@@ -201,7 +232,7 @@ public final class UtilesBD {
 
     // Statement + Properties > ResultSet
     public static final ResultSet obtener(Statement stmt, Properties prp) throws SQLException {
-        // Statement + Select SQL 
+        // Statement + Select SQL
         ResultSet rs = stmt.executeQuery(prp.getProperty("default_query"));
 
         // > ResultSet
@@ -209,9 +240,9 @@ public final class UtilesBD {
     }
 
     // Properties > ResultSet ( Easy )
-    public static final ResultSet conectar(Properties prp) throws SQLException {
+    public static final ResultSet obtener(Properties prp) throws SQLException {
         // Establecer Conexión
-        Connection conn = UtilesBD.abrir(prp);
+        Connection conn = UtilesBD.conectar(prp);
 
         // Establecer Vinculación
         Statement stmt = vincular(conn, prp);
