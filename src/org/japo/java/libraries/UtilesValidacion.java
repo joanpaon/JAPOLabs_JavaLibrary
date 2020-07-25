@@ -16,9 +16,6 @@
 package org.japo.java.libraries;
 
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 /**
  *
@@ -28,43 +25,10 @@ public final class UtilesValidacion {
 
     // Dato + Expresión Regular
     public static final boolean validar(String dato, String er) {
-        // Semáforo de validación
-        boolean testOK = false;
-
-        // Proceso de validación
-        try {
-            // Compila la expresión regular
-            Pattern patron = Pattern.compile(er);
-
-            // Genera el motor de búsqueda
-            Matcher detector = patron.matcher(dato);
-
-            // Averiguar Coincidencia
-            testOK = detector.matches();
-        } catch (PatternSyntaxException e) {
-            System.out.println(e);
-        }
-
-        // Devolver Semáforo
-        return testOK;
+        return UtilesExpReg.enlazar(dato, er).matches();
     }
 
-    // Texto + Expresión Regular
-    public static final Matcher buscarPatron(String texto, String er) {
-        // Compila la expresión regular
-        Pattern patron = Pattern.compile(er);
-
-        // Genera el motor de búsqueda
-        Matcher detector = patron.matcher(texto);
-
-        // Realiza la comprobación
-        detector.find();
-
-        // Retorno del resultado
-        return detector;
-    }
-
-    // Texto + [Lista]
+    // Texto + [Lista] > Hay Ocurrencia o No
     public static final boolean validar(String dato, String[] lista) {
         // Ordena Lista
         Arrays.sort(lista);

@@ -142,6 +142,7 @@ public final class UtilesSwing {
         } catch (ClassNotFoundException | IllegalAccessException
                 | InstantiationException | UnsupportedLookAndFeelException e) {
             System.out.println("ERROR: Instalación del LnF - Clase");
+            System.out.println("ERROR: " + e.getMessage());
         }
     }
 
@@ -161,6 +162,7 @@ public final class UtilesSwing {
             } catch (ClassNotFoundException | IllegalAccessException
                     | InstantiationException | UnsupportedLookAndFeelException e) {
                 System.out.println("ERROR: Instalación del LnF - Perfil");
+                System.out.println("ERROR: " + e.getMessage());
             }
         }
     }
@@ -177,6 +179,7 @@ public final class UtilesSwing {
         } catch (ClassNotFoundException | IllegalAccessException
                 | InstantiationException | UnsupportedLookAndFeelException e) {
             System.out.println("ERROR: Instalación del LnF del Sistema");
+            System.out.println("ERROR: " + e.getMessage());
         }
     }
 
@@ -192,6 +195,7 @@ public final class UtilesSwing {
         } catch (ClassNotFoundException | IllegalAccessException
                 | InstantiationException | UnsupportedLookAndFeelException e) {
             System.out.println("ERROR: Instalación del LnF Cross Platform");
+            System.out.println("ERROR: " + e.getMessage());
         }
     }
 
@@ -207,6 +211,7 @@ public final class UtilesSwing {
             // Icon >> Etiqueta Imagen
             lblAct.setIcon(new ImageIcon(imgFin));
         } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
             System.out.println("ERROR: Reescalar/Asignar imagen a etiqueta");
         }
     }
@@ -237,6 +242,7 @@ public final class UtilesSwing {
             lblAct.setIcon(new ImageIcon(imgFin));
         } catch (Exception e) {
             System.out.println("ERROR: No se ha podido adaptar imagen a etiqueta");
+            System.out.println("ERROR: " + e.getMessage());
         }
     }
 
@@ -257,6 +263,7 @@ public final class UtilesSwing {
             texto = (String) contents.getTransferData(DataFlavor.stringFlavor);
         } catch (HeadlessException | UnsupportedFlavorException | IOException e) {
             System.out.println("ERROR: Lectura del portapapeles");
+            System.out.println("ERROR: " + e.getMessage());
         }
 
         // Texto extraido
@@ -282,6 +289,7 @@ public final class UtilesSwing {
             procesoOK = true;
         } catch (HeadlessException e) {
             System.out.println("ERROR: Escritura en el portapapeles");
+            System.out.println("ERROR: " + e.getMessage());
         }
 
         // Devuelve semáforo
@@ -362,6 +370,7 @@ public final class UtilesSwing {
             ventana.setIconImage(new ImageIcon(urlICN).getImage());
         } catch (Exception e) {
             System.out.println("ERROR: Favicon no instalado");
+            System.out.println("ERROR: " + e.getMessage());
         }
     }
 
@@ -371,7 +380,7 @@ public final class UtilesSwing {
         Font f;
 
         // Cargar Fuente
-        try (InputStream is = new FileInputStream(fichero)) {
+        try ( InputStream is = new FileInputStream(fichero)) {
             f = Font.createFont(Font.TRUETYPE_FONT, is);
         } catch (Exception e) {
             f = null;
@@ -387,7 +396,7 @@ public final class UtilesSwing {
         Font f;
 
         // Cargar Fuente
-        try (InputStream is = ClassLoader.getSystemResourceAsStream(recurso)) {
+        try ( InputStream is = ClassLoader.getSystemResourceAsStream(recurso)) {
             f = Font.createFont(Font.TRUETYPE_FONT, is);
         } catch (Exception e) {
             f = null;
